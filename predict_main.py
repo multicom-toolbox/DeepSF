@@ -24,8 +24,8 @@ outputdir = sys.argv[11]
 
 
 
-feature_dir_global ='/home/jh7x3/SCOP175_training_data_09202017/Feature_aa_ss_sa/'
-pssm_dir_global = '/home/jh7x3/SCOP175_training_data_09202017/PSSM_Fea/'
+feature_dir_global ='/var/www/html/DeepSF/download/SCOP175_training_data_09202017/Feature_aa_ss_sa/'
+pssm_dir_global = '/var/www/html/DeepSF/download/SCOP175_training_data_09202017/PSSM_Fea/'
 
 
 if not os.path.exists(feature_dir_global):

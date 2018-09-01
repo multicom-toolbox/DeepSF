@@ -254,7 +254,7 @@ def DLS2F_construct_withaa_complex_win_filter_layer_opt(win_array,ktop_node,outp
     return DLS2F_ResCNN
 
 
-def DLS2F_train_complex_win_filter_layer_opt(data_all_dict_padding,testdata_all_dict_padding,train_list,val_list,CV_dir,model_prefix,epoch_outside,epoch_inside,seq_end,win_array,use_bias,hidden_type,nb_filters,nb_layers,opt,hidden_num,ktop_node):
+def DLS2F_train_complex_win_filter_layer_opt(data_all_dict_padding,testdata_all_dict_padding,train_list,val_list,test_list,CV_dir,model_prefix,epoch_outside,epoch_inside,seq_end,win_array,use_bias,hidden_type,nb_filters,nb_layers,opt,hidden_num,ktop_node):
     start=0
     end=seq_end
     feature_dir = feature_dir_global
@@ -479,7 +479,72 @@ def DLS2F_train_complex_win_filter_layer_opt(data_all_dict_padding,testdata_all_
             print "Duplicate pdb name %s in Val list " % pdb_name
         else:
             Vallist_targets_keys[pdb_name]=train_targets
+
     
+    Testlist_data_keys = dict()
+    Testlist_targets_keys = dict()
+    sequence_file=open(test_list,'r').readlines() 
+    for i in xrange(len(sequence_file)):
+        if sequence_file[i].find('Length') >0 :
+            print "Skip line ",sequence_file[i]
+            continue
+        pdb_name = sequence_file[i].split('\t')[0]
+        #print "Processing ",pdb_name
+        featurefile = feature_dir + '/' + pdb_name + '.fea_aa_ss_sa'
+        pssmfile = pssm_dir + '/' + pdb_name + '.pssm_fea'
+        if not os.path.isfile(featurefile):
+                    print "feature file not exists: ",featurefile, " pass!"
+                    continue         
+        
+        if not os.path.isfile(pssmfile):
+                    print "pssm feature file not exists: ",pssmfile, " pass!"
+                    continue         
+        
+        featuredata = import_DLS2FSVM(featurefile)
+        pssmdata = import_DLS2FSVM(pssmfile) # d1ft8e_ has wrong length, in pdb, it has 57, but in pdb, it has 44, why?
+        pssm_fea = pssmdata[:,1:]
+        
+        fea_len = (featuredata.shape[1]-1)/(20+3+2)
+        #if fea_len < 40: # since kmax right now is ktop_node
+        #    continue
+        train_labels = featuredata[:,0]
+        train_feature = featuredata[:,1:]
+        train_feature_seq = train_feature.reshape(fea_len,25)
+        train_feature_aa = train_feature_seq[:,0:20]
+        train_feature_ss = train_feature_seq[:,20:23]
+        train_feature_sa = train_feature_seq[:,23:25]
+        train_feature_pssm = pssm_fea.reshape(fea_len,20)
+        min_pssm=-8
+        max_pssm=16
+        
+        train_feature_pssm_normalize = np.empty_like(train_feature_pssm)
+        train_feature_pssm_normalize[:] = train_feature_pssm
+        train_feature_pssm_normalize=(train_feature_pssm_normalize-min_pssm)/(max_pssm-min_pssm)
+        featuredata_all_tmp = np.concatenate((train_feature_aa,train_feature_ss,train_feature_sa,train_feature_pssm_normalize), axis=1)
+                    
+        if fea_len <ktop_node: # suppose k-max = ktop_node
+            fea_len = ktop_node
+            train_featuredata_all = np.zeros((ktop_node,featuredata_all_tmp.shape[1]))
+            train_featuredata_all[:featuredata_all_tmp.shape[0],:featuredata_all_tmp.shape[1]] = featuredata_all_tmp
+        else:
+            train_featuredata_all = featuredata_all_tmp
+        
+        #print "test_featuredata_all: ",train_featuredata_all.shape
+        train_targets = np.zeros((train_labels.shape[0], 1195 ), dtype=int)
+        for i in range(0, train_labels.shape[0]):
+            train_targets[i][int(train_labels[i])] = 1
+        
+        train_featuredata_all=train_featuredata_all.reshape(1,train_featuredata_all.shape[0],train_featuredata_all.shape[1])
+        if pdb_name in Testlist_data_keys:
+            print "Duplicate pdb name %s in Test list " % pdb_name
+        else:
+            Testlist_data_keys[pdb_name]=train_featuredata_all
+        
+        if pdb_name in Testlist_targets_keys:
+            print "Duplicate pdb name %s in Test list " % pdb_name
+        else:
+            Testlist_targets_keys[pdb_name]=train_targets
+            
     ### Define the model 
     model_out= "%s/model-train-%s.json" % (CV_dir,model_prefix)
     model_weight_out = "%s/model-train-weight-%s.h5" % (CV_dir,model_prefix)
@@ -546,7 +611,7 @@ def DLS2F_train_complex_win_filter_layer_opt(data_all_dict_padding,testdata_all_
         
         if epoch < epoch_outside*1/3:
             continue
-        """
+        
         corrected_top1=0
         corrected_top5=0
         corrected_top10=0
@@ -600,7 +665,7 @@ def DLS2F_train_complex_win_filter_layer_opt(data_all_dict_padding,testdata_all_
         print 'The top10_acc accuracy is %.5f' % (top10_acc)
         print 'The top15_acc accuracy is %.5f' % (top15_acc)
         print 'The top20_acc accuracy is %.5f' % (top20_acc)
-        """
+        
         sequence_file=open(val_list,'r').readlines() 
         #pdb_name='d1np7a1'
         all_cases=0
@@ -623,6 +688,12 @@ def DLS2F_train_complex_win_filter_layer_opt(data_all_dict_padding,testdata_all_
         val_acc = float(corrected)/all_cases
         if val_acc >= val_acc_best:
             val_acc_best = val_acc 
+            test_acc_best = test_acc
+            test_acc_best_top1=top1_acc
+            test_acc_best_top5=top5_acc
+            test_acc_best_top10=top10_acc
+            test_acc_best_top15=top15_acc
+            test_acc_best_top20=top20_acc
             print("Saved best weight to disk") 
             DLS2F_CNN.save_weights(model_weight_out_best)
         print 'The val accuracy is %.5f' % (val_acc)     #   ---> 0.25499
@@ -654,7 +725,13 @@ def DLS2F_train_complex_win_filter_layer_opt(data_all_dict_padding,testdata_all_
         if val_acc >= val_acc_best:
             train_acc_best = train_acc   
     print "Training finished, best training acc = ",train_acc_best
+    print "Training finished, best testing acc = ",test_acc_best
     print "Training finished, best validation acc = ",val_acc_best
+    print "Training finished, best top1 acc = ",test_acc_best_top1
+    print "Training finished, best top5 acc = ",test_acc_best_top5
+    print "Training finished, best top10 acc = ",test_acc_best_top10
+    print "Training finished, best top15 acc = ",test_acc_best_top15
+    print "Training finished, best top20 acc = ",test_acc_best_top20
     print "Setting and saving best weights"
     DLS2F_CNN.load_weights(model_weight_out_best)
     DLS2F_CNN.save_weights(model_weight_out)

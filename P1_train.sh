@@ -15,6 +15,6 @@ datadir=/home/jh7x3/DLS2F/DLS2F_Project/Paper_data/DeepSF_Source_code/datasets/
 outputdir=/home/jh7x3/DLS2F/DLS2F_Project/Paper_data/DeepSF_Source_code/test
 echo "#################  Training on inter 15"
 ## Test Theano
-THEANO_FLAGS=floatX=float32,device=gpu python /home/jh7x3/DLS2F/DLS2F_Project/Paper_data/DeepSF_Source_code/training_main.py 15 10 15 nadam '8_10' 500 30 100 5  $datadir $outputdir
+THEANO_FLAGS=floatX=float32,device=gpu python /home/jh7x3/DLS2F/DLS2F_Project/Paper_data/DeepSF_Source_code/training_main_iterative.py 15 10 15 nadam '8_10' 500 30 100 5  $datadir $outputdir
 ## Test Theano
 THEANO_FLAGS=floatX=float32,device=gpu python /home/jh7x3/DLS2F/DLS2F_Project/Paper_data/DeepSF_Source_code/predict_main.py  15 10 15 nadam '8_10' 500 30 100 5  $datadir $outputdir
