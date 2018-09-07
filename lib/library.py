@@ -149,11 +149,11 @@ def load_train_test_data_padding_with_interval(CV_dir, Interval,prefix,ktop_node
             featurefile = feature_dir + '/' + pdb_name + '.fea_aa_ss_sa'
             pssmfile = pssm_dir + '/' + pdb_name + '.pssm_fea'
             if not os.path.isfile(featurefile):
-                        print "feature file not exists: ",featurefile, " pass!"
+                        #print "feature file not exists: ",featurefile, " pass!"
                         continue         
                             
             if not os.path.isfile(pssmfile):
-                        print "pssm feature file not exists: ",pssmfile, " pass!"
+                        #print "pssm feature file not exists: ",pssmfile, " pass!"
                         continue         
                             
             featuredata = import_DLS2FSVM(featurefile)
@@ -367,11 +367,11 @@ def DLS2F_train_complex_win_filter_layer_opt(data_all_dict_padding,testdata_all_
         featurefile = feature_dir + '/' + pdb_name + '.fea_aa_ss_sa'
         pssmfile = pssm_dir + '/' + pdb_name + '.pssm_fea'
         if not os.path.isfile(featurefile):
-                    print "feature file not exists: ",featurefile, " pass!"
+                    #print "feature file not exists: ",featurefile, " pass!"
                     continue         
         
         if not os.path.isfile(pssmfile):
-                    print "pssm feature file not exists: ",pssmfile, " pass!"
+                    #print "pssm feature file not exists: ",pssmfile, " pass!"
                     continue         
         
         featuredata = import_DLS2FSVM(featurefile)
@@ -431,11 +431,11 @@ def DLS2F_train_complex_win_filter_layer_opt(data_all_dict_padding,testdata_all_
         featurefile = feature_dir + '/' + pdb_name + '.fea_aa_ss_sa'
         pssmfile = pssm_dir + '/' + pdb_name + '.pssm_fea'
         if not os.path.isfile(featurefile):
-                    print "feature file not exists: ",featurefile, " pass!"
+                    #print "feature file not exists: ",featurefile, " pass!"
                     continue         
         
         if not os.path.isfile(pssmfile):
-                    print "pssm feature file not exists: ",pssmfile, " pass!"
+                    #print "pssm feature file not exists: ",pssmfile, " pass!"
                     continue         
         
         featuredata = import_DLS2FSVM(featurefile)
@@ -493,11 +493,11 @@ def DLS2F_train_complex_win_filter_layer_opt(data_all_dict_padding,testdata_all_
         featurefile = feature_dir + '/' + pdb_name + '.fea_aa_ss_sa'
         pssmfile = pssm_dir + '/' + pdb_name + '.pssm_fea'
         if not os.path.isfile(featurefile):
-                    print "feature file not exists: ",featurefile, " pass!"
+                    #print "feature file not exists: ",featurefile, " pass!"
                     continue         
         
         if not os.path.isfile(pssmfile):
-                    print "pssm feature file not exists: ",pssmfile, " pass!"
+                    #print "pssm feature file not exists: ",pssmfile, " pass!"
                     continue         
         
         featuredata = import_DLS2FSVM(featurefile)
