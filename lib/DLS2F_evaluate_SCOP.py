@@ -48,7 +48,7 @@ if __name__ == '__main__':
         prediction_file = prediction_dir+'/'+pdb_name+'.prediction'
         if not os.path.isfile(prediction_file):
             raise Exception("prediciton file not exists: ",prediction_file, " pass!")
-        print "Loading ",prediction_file
+        #print "Loading ",prediction_file
         prediciton_results = np.loadtxt(prediction_file)     
         top1_prediction=prediciton_results.argsort()[-1:][::-1]
         top5_prediction=prediciton_results.argsort()[-5:][::-1]
@@ -64,31 +64,31 @@ if __name__ == '__main__':
         for da in top1_prediction:
             if da in true_label_int:
                 corrected_top1 +=1
-                print "%s is predicted correctly in top 1, great!" % (pdb_name)
+                #print "%s is predicted correctly in top 1, great!" % (pdb_name)
                 top1 = "correct"
                 break
         for da in top5_prediction:
             if da in true_label_int:
                 corrected_top5 +=1
-                print "%s is predicted correctly in top 5, great!" % (pdb_name)
+                #print "%s is predicted correctly in top 5, great!" % (pdb_name)
                 top5 = "correct"
                 break
         for da in top10_prediction:
             if da in true_label_int:
                 corrected_top10 +=1
-                print "%s is predicted correctly in top 10, great!" % (pdb_name)
+                #print "%s is predicted correctly in top 10, great!" % (pdb_name)
                 top10 = "correct"
                 break
         for da in top15_prediction:
             if da in true_label_int:
                 corrected_top15 +=1
-                print "%s is predicted correctly in top 15, great!" % (pdb_name)
+                #print "%s is predicted correctly in top 15, great!" % (pdb_name)
                 top15 = "correct"
                 break
         for da in top20_prediction:
             if da in true_label_int:
                 corrected_top20 +=1
-                print "%s is predicted correctly in top 20, great!" % (pdb_name)
+                #print "%s is predicted correctly in top 20, great!" % (pdb_name)
                 top20 = "correct"
                 break
         check = "%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (pdb_name,true_labelname,top1,top5,top10,top15,top20);
