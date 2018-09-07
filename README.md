@@ -57,7 +57,7 @@ sudo pip install python-h5py
 ```
 **(D) Testing** 
 
-### use Sequence similarity reduction dataset as training
+***use Sequence similarity reduction dataset as training***
 ```
 python ./training/predict_single.py ./datasets/Traindata.list ./models/model_SimilarityReduction.json  ./models/model_SimilarityReduction.h5 datasets/features/ ./test/out1
 The top1_acc accuracy is 0.84836 (10445/12312)
@@ -82,7 +82,7 @@ The top15_acc accuracy is 0.95973 (2431/2533)
 The top20_acc accuracy is 0.96723 (2450/2533)
 ```
 
-### use Three-level homology reduction dataset as training
+*** use Three-level homology reduction dataset as training***
 ```
 python ./training/predict_single.py ./datasets/Three_levels_dataset/test_dataset.list_fold ./models/model_ThreeLevel.json  ./models/model_ThreeLevel.h5 datasets/features/ ./test/out1
 The top1_acc accuracy is 0.41226 (296/718)
