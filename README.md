@@ -55,7 +55,14 @@ sudo pip install python-h5py
 "backend": "theano"
 }
 ```
-**(D) Testing** 
+
+**(D) Configuration**
+
+```
+perl configure.pl
+```
+
+**(E) Testing** 
 
 ***use Sequence similarity reduction dataset as training***
 ```
