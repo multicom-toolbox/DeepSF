@@ -1,7 +1,7 @@
 # DeepSF
 
 **Deep convolutional neural network for mapping protein sequences to folds**
-
+Web-server and datasets at http://iris.rnet.missouri.edu/DeepSF/  
 
 Test Environment
 --------------------------------------------------------------------------------------
