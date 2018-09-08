@@ -138,5 +138,21 @@ The top15_acc accuracy is 0.90431 (1134/1254)
 The top20_acc accuracy is 0.92105 (1155/1254)
 ```
 
-**(F) Protein fold recognition and structure prediction**
+
+```
+cd training
+sh P1_train.sh
+```
+The top1_acc accuracy is 0.75672 (11123/14699)
+The top5_acc accuracy is 0.94013 (13819/14699)
+The top10_acc accuracy is 0.97265 (14297/14699)
+The top15_acc accuracy is 0.98415 (14466/14699)
+The top20_acc accuracy is 0.99000 (14552/14699)
+
+```
+sh P1_evaluate.sh
+```
+
+```
+**(G) Protein fold recognition and structure prediction**
 Working on the update
