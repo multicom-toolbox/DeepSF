@@ -32,6 +32,9 @@ tar -zxf features.tar.gz
 
 **(C) Install theano, Keras, and h5py and Update keras.json**  
 
+virtualenv ~/python_virtualenv
+source ~/python_virtualenv/bin/activate
+
 (a) Install theano: 
 ```
 sudo pip install theano==0.9.0
