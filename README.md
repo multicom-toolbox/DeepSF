@@ -128,9 +128,9 @@ The top15_acc accuracy is 0.98428 (1252/1272)
 The top20_acc accuracy is 0.98978 (1259/1272)
 
 THEANO_FLAGS=floatX=float32,device=cpu python ./training/predict_single.py ./datasets/D2_Three_levels_dataset/test_dataset.list_superfamily ./models/model_ThreeLevel.json  ./models/model_ThreeLevel.h5 /var/www/html/DeepSF/download/SCOP175_training_data_09202017/ ./test/out2  36
-The top1_acc accuracy is 0.50638 (635/1254)
-The top5_acc accuracy is 0.77751 (975/1254)
+The top1_acc accuracy is 0.50718 (636/1254)
+The top5_acc accuracy is 0.77671 (974/1254)
 The top10_acc accuracy is 0.86443 (1084/1254)
-The top15_acc accuracy is 0.90750 (1138/1254)
-The top20_acc accuracy is 0.92185 (1156/1254)
+The top15_acc accuracy is 0.90431 (1134/1254)
+The top20_acc accuracy is 0.92105 (1155/1254)
 ```
