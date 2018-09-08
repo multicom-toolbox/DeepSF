@@ -153,6 +153,18 @@ The top20_acc accuracy is 0.99000 (14552/14699)
 **Evaluation**
 ```
 sh P1_evaluate.sh
+
+The top1_acc accuracy is 0.75672 (11123/14699)
+The top5_acc accuracy is 0.94013 (13819/14699)
+The top10_acc accuracy is 0.97265 (14297/14699)
+The top15_acc accuracy is 0.98415 (14466/14699)
+The top20_acc accuracy is 0.99000 (14552/14699)
+
+The top1_acc accuracy is 0.73572 (1481/2013)
+The top5_acc accuracy is 0.89916 (1810/2013)
+The top10_acc accuracy is 0.94635 (1905/2013)
+The top15_acc accuracy is 0.96274 (1938/2013)
+The top20_acc accuracy is 0.97069 (1954/2013)
 ```
 
 
