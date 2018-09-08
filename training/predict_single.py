@@ -10,7 +10,7 @@ sys.path.insert(0, GLOBAL_PATH+'/lib')
 
 
 
-if len(sys.argv) != 6:
+if len(sys.argv) != 7:
           print 'please input the right parameters: interval'
           sys.exit(1)
 
@@ -19,7 +19,7 @@ modelfile = sys.argv[2]
 weightfile = sys.argv[3]
 data_dir = sys.argv[4]
 CV_dir = sys.argv[5]
-
+ktop_node = sys.argv[6]
 
 
 feature_dir_global =data_dir +'/Feature_aa_ss_sa/'
@@ -57,7 +57,6 @@ resultdir = CV_dir+'/DCNN_results'
 if not os.path.exists(resultdir):
     os.makedirs(resultdir)
 
-ktop_node = 40
 
 print "###### Evaluating data";
 cmd1='python ' + GLOBAL_PATH + '/lib/DLS2F_predict_fea.py  '+ test_file + '  ' + modelfile+ '  ' + weightfile+ '  ' + feature_dir_global + '  ' +  pssm_dir_global + ' '   + resultdir + '  '+str(ktop_node)

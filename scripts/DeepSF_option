@@ -1,0 +1,46 @@
+###############################Software and Data Settings####################
+#prosys script dir
+prosys_dir = /home/casp13/MULTICOM_package/casp8/
+
+#DeepSF tool dir
+tool_dir = /home/casp13/deepsf_3d/
+
+#assisted_tools tool dir
+assisted_tools = /home/casp13/deepsf_3d/deepsf3d_tools/
+
+#metapsicov tool dir
+metapsicov_dir = /home/casp13/tools/metapsicov-pipeline-2.0/
+
+#SCRATCH tool dir
+SCRATCH_tools = /home/casp13/DNCON2/SCRATCH-1D_1.1/
+
+#hhsuite tool dir
+hhsuite_tools = /home/casp13/deepsf_3d/deepsf3d_tools/hhsuite-2.0.16-linux-x86_64/
+
+
+#hhsearch15_tools tool dir
+hhsearch15_tools = /home/casp13/deepsf_3d/deepsf3d_tools/hhsearch1.5.1/
+
+
+#hmmer3_dir tool dir
+hmmer3_tools = /home/casp13/deepsf_3d/deepsf3d_tools/hmmer-3.1b2-linux-intel-x86_64/binaries/
+
+#nr90_path tool dir
+nr90_path = /home/casp13/MULTICOM_package/nr/nr90 
+
+#pspro2 tool dir
+pspro2_tools = /home/casp13/deepsf_3d/deepsf3d_tools/pspro2.0/
+
+#decoy_model_number
+decoy_model_number = 100
+
+#final_model_number
+final_model_number = 5
+
+#Unicon3D prefix
+output_prefix_name = DeepSF
+
+
+
+
+
