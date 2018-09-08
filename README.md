@@ -137,3 +137,6 @@ The top10_acc accuracy is 0.86443 (1084/1254)
 The top15_acc accuracy is 0.90431 (1134/1254)
 The top20_acc accuracy is 0.92105 (1155/1254)
 ```
+
+**(F) Protein fold recognition and structure prediction**
+Working on the update
