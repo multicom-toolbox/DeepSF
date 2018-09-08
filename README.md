@@ -160,6 +160,12 @@ The top10_acc accuracy is 0.97265 (14297/14699)
 The top15_acc accuracy is 0.98415 (14466/14699)
 The top20_acc accuracy is 0.99000 (14552/14699)
 
+The top1_acc accuracy is 0.63956 (1620/2533)
+The top5_acc accuracy is 0.86932 (2202/2533)
+The top10_acc accuracy is 0.92538 (2344/2533)
+The top15_acc accuracy is 0.94473 (2393/2533)
+The top20_acc accuracy is 0.95539 (2420/2533)
+
 The top1_acc accuracy is 0.73572 (1481/2013)
 The top5_acc accuracy is 0.89916 (1810/2013)
 The top10_acc accuracy is 0.94635 (1905/2013)
