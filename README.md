@@ -43,14 +43,17 @@ source ~/python_virtualenv/bin/activate
 ```
 sudo pip install theano==0.9.0
 ```
+
 (c) Install Keras:
 ```
 sudo pip install keras==1.2.2
 ```
+
 (d) Install the h5py library:  
 ```
 sudo pip install python-h5py
 ```
+
 (e) Install the matplotlib library:  
 ```
 sudo pip install matplotlib
@@ -185,8 +188,11 @@ The top20_acc accuracy is 0.97466 (1962/2013)
 **(G) Protein fold recognition and structure prediction**
 
 (a) Download the database
+
 (b) Run fold recognition only
+
 (c) Run fold recognition and structure prediction
+
 ```
 Working on the update
 
