@@ -33,27 +33,30 @@ tar -zxf features.tar.gz
 
 **(C) Install theano, Keras, and h5py and Update keras.json**  
 
+(a) Create python virtual environment
+```
 virtualenv ~/python_virtualenv
 source ~/python_virtualenv/bin/activate
+```
 
-(a) Install theano: 
+(b) Install theano: 
 ```
 sudo pip install theano==0.9.0
 ```
-(b) Install Keras:
+(c) Install Keras:
 ```
 sudo pip install keras==1.2.2
 ```
-(c) Install the h5py library:  
+(d) Install the h5py library:  
 ```
 sudo pip install python-h5py
 ```
-(d) Install the matplotlib library:  
+(e) Install the matplotlib library:  
 ```
 sudo pip install matplotlib
 ```
 
-(e) Add the entry [“image_dim_ordering": "tf”,] to your keras..json file at ~/.keras/keras.json. After the update, your keras.json should look like the one below:  
+(f) Add the entry [“image_dim_ordering": "tf”,] to your keras..json file at ~/.keras/keras.json. After the update, your keras.json should look like the one below:  
 ```
 {
 "epsilon": 1e-07,
