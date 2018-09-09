@@ -39,10 +39,12 @@ cd datasets
 mkdir features
 cd features
 wget http://sysbio.rnet.missouri.edu/bdm_download/DeepSF/datasets/features/Feature_aa_ss_sa.tar.gz
-
 tar -zxf Feature_aa_ss_sa.tar.gz
+rm Feature_aa_ss_sa.tar.gz
+
 wget http://sysbio.rnet.missouri.edu/bdm_download/DeepSF/datasets/features/PSSM_Fea.tar.gz
 tar -zxf PSSM_Fea.tar.gz
+rm PSSM_Fea.tar.gz
 ```
 
 **(C) Download software package for structure prediction (~14G)**  
@@ -50,6 +52,7 @@ tar -zxf PSSM_Fea.tar.gz
 cd ~/DeepSF_package/DeepSF  
 wget http://sysbio.rnet.missouri.edu/bdm_download/DeepSF/software.tar.gz
 tar -zxf software.tar.gz
+rm software.tar.gz
 ```
 
 **(D) Install theano, Keras, and h5py and Update keras.json**  
@@ -213,6 +216,7 @@ The top20_acc accuracy is 0.97466 (1962/2013)
 cd ~/DeepSF_package/DeepSF 
 wget http://sysbio.rnet.missouri.edu/bdm_download/DeepSF/database.tar.gz
 tar -zxf database.tar.gz
+rm database.tar.gz
 ```
 
 (b) Test required softwares
