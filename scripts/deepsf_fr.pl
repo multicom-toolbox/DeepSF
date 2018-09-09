@@ -21,7 +21,7 @@ $query_file = abs_path(shift @ARGV);
 $out_dir = abs_path(shift @ARGV);
 $fold_recognition_only = shift @ARGV;
 
-if($fold_recognition_only ne 'no' and $fold_recognition_only !='')
+if($fold_recognition_only ne 'no' and $fold_recognition_only ne '')
 {
 	$fold_recognition_only = 'yes';
 	print "Setting to fold recognition only mode\n\n";
