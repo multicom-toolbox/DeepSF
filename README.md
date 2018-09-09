@@ -6,7 +6,7 @@ Web-server and datasets at http://iris.rnet.missouri.edu/DeepSF/
 
 Test Environment
 --------------------------------------------------------------------------------------
-64-bit PC - Ubuntu 16.04 LTS
+Red Hat Enterprise Linux Server release 6.4 (Santiago)
 
 Installation Steps
 --------------------------------------------------------------------------------------
