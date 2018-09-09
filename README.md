@@ -54,7 +54,7 @@ tar -zxf software.tar.gz
 
 **(D) Install theano, Keras, and h5py and Update keras.json**  
 
-(a) Create python virtual environment
+(a) Create python virtual environment (if not installed)
 ```
 virtualenv ~/python_virtualenv_deepsf
 source ~/python_virtualenv_deepsf/bin/activate
