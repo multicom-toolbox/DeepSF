@@ -77,7 +77,7 @@ pip install python-h5py
 
 (e) Install the matplotlib library:  
 ```
-sudo pip install matplotlib
+pip install matplotlib
 ```
 
 (f) Add the entry [“image_dim_ordering": "tf”,] to your keras..json file at ~/.keras/keras.json. After the update, your keras.json should look like the one below:  
