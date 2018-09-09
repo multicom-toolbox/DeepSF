@@ -214,7 +214,13 @@ cd ~/DeepSF_package/DeepSF
 wget http://sysbio.rnet.missouri.edu/bdm_download/DeepSF/database.tar.gz
 tar -zxf database.tar.gz
 ```
-(b) Run fold recognition only
+
+(b) Test required softwares
+
+```
+```
+
+(c) Run fold recognition only
 
 ```
 source ~/python_virtualenv_deepsf/bin/activate
@@ -226,7 +232,7 @@ The ranking of top ECOD_H folds are saved in test/out1/fold_rank_list.ECOD_H
 
 ```
 
-(c) Run fold recognition and structure prediction
+(d) Run fold recognition and structure prediction
 
 ```
 source ~/python_virtualenv_deepsf/bin/activate
