@@ -55,6 +55,19 @@ tar -zxf software.tar.gz
 rm software.tar.gz
 ```
 
+Test required softwares
+
+```
+cd software/pspro2
+mkdir test3
+bin/predict_ss_sa_cm.sh test/test.fasta  test3
+
+cd software/SCRATCH-1D_1.1
+cd doc/
+../bin/run_SCRATCH-1D_predictors.sh test.fasta test.out 4
+
+```
+
 **(D) Install theano, Keras, and h5py and Update keras.json**  
 
 (a) Create python virtual environment (if not installed)
@@ -231,7 +244,6 @@ bin/predict_ss_sa_cm.sh test/test.fasta  test3
 cd software/SCRATCH-1D_1.1
 cd doc/
 ../bin/run_SCRATCH-1D_predictors.sh test.fasta test.out 4
-
 
 ```
 
