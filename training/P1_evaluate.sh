@@ -11,7 +11,7 @@
 ## Load Needed Modules
 #module load cuda/cuda-8.0
 
-GLOBAL_PATH='/home/jh7x3/DLS2F/DLS2F_Project/Paper_data/DeepSF_Source_code/';
+GLOBAL_PATH='/home/casp13/deepsf_3d/Github/DeepSF/';
 
 datadir=$GLOBAL_PATH/datasets/D1_SimilarityReduction_dataset
 outputdir=$GLOBAL_PATH/test

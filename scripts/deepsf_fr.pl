@@ -10,20 +10,31 @@ use File::Basename;
 use LWP::UserAgent;
 use Time::Piece;
 
-
-if (@ARGV != 3)
+$fold_recognition_only = "no";
+if (@ARGV < 3)
 {
-	die "need 3 parameters: fr option file, query file(fasta), output dir.\n";
+	die "need 3 parameters: fr option file, query file(fasta), output dir.\n"; 
 }
 
 $option_file = shift @ARGV;
 $query_file = shift @ARGV;
 $out_dir = shift @ARGV;
+$fold_recognition_only = shift @ARGV;
 
+if($fold_recognition_only ne 'no')
+{
+	$fold_recognition_only = 'yes';
+	print "Setting to fold recognition only mode\n\n";
+}
+if(!(-d $out_dir))
+{
+	`mkdir $out_dir`;
+}
 -f $option_file || die "option file doesn't exist.\n";
 -f $query_file || die "query file doesn't exist.\n";
 -d $out_dir || die "output dir doesn't exist.\n";
 
+chdir($out_dir);
 #read fasta file
 open(QUERY, $query_file) || die "can't read query file.\n";
 $qname = <QUERY>;
@@ -81,10 +92,6 @@ foreach $line (@options)
 	if ($line =~ /^deepsf_dir\s*=\s*(\S+)/)
 	{
 		$deepsf_dir = $1; 
-	}
-	if ($line =~ /^assisted_tools\s*=\s*(\S+)/)
-	{
-		$assisted_tools = $1; 
 	}
 	if ($line =~ /^prosys_dir\s*=\s*(\S+)/)
 	{
@@ -150,7 +157,6 @@ foreach $line (@options)
 }
 -d $prosys_dir || die "prosys dir doesn't exist.\n";
 -d $modeller_dir || die "modeller dir doesn't exist.\n";
--d $atom_dir || die "atom dir doesn't exist.\n";
 -f $fr_template_lib_file || die "fold recognition template library file doesn't exist.\n";
 $num_model_simulate > 0 || die "modeller number of models to simulate should be bigger than 0.\n";
 
@@ -270,38 +276,31 @@ print TMP "$job_identifier\n";
 close TMP;
 
 
-print("perl  $deepsf_dir/P1_run_fold_recognition/run_DeepSF_fr.pl  $query_file_new $deepsf_dir/DeepSF_option\n");
-system("perl  $deepsf_dir/P1_run_fold_recognition/run_DeepSF_fr.pl  $query_file_new $deepsf_dir/DeepSF_option");
+$scop_rank = "$outdir_stage1/$jobname-predict-out/${qname}.rank_list";
+$ecos_x_rank = "$outdir_stage1/$jobname-predict-out-ECOD_X/${qname}.rank_list";
+$ecod_h_rank = "$outdir_stage1/$jobname-predict-out-ECOD_H/${qname}.rank_list";
+if(!(-e $scop_rank) or !(-e $ecos_x_rank) or !(-e $ecod_h_rank))
+{
+	print("perl  $deepsf_dir/P1_run_fold_recognition/run_DeepSF_fr.pl  $query_file_new\n");
+	system("perl  $deepsf_dir/P1_run_fold_recognition/run_DeepSF_fr.pl  $query_file_new");
+}
 
+`cp $outdir_stage1/$jobname-predict-out/${qname}.rank_list $query_dir/fold_rank_list.SCOP`;
+`cp $outdir_stage1/$jobname-predict-out-ECOD_X/${qname}.rank_list $query_dir/fold_rank_list.ECOD_X`;
+`cp $outdir_stage1/$jobname-predict-out-ECOD_H/${qname}.rank_list $query_dir/fold_rank_list.ECOD_H`;
+
+print "\nThe ranking of top SCOP folds are saved in $query_dir/fold_rank_list.SCOP\n";
+print "The ranking of top ECOD_X folds are saved in $query_dir/fold_rank_list.ECOD_X\n";
+print "The ranking of top ECOD_H folds are saved in $query_dir/fold_rank_list.ECOD_H\n\n";
+
+if($fold_recognition_only eq 'yes')
+{
+	print "DeepSF fold recognition is finished\n\n";
+	exit;
+}
 
 $rank_file = "$outdir_stage1/template_rank_summary/$qname.rank";
-=pod
-Ranked templates for T0465, total = 20037
-1       2JZ5A   -0.96
-2       2HJQA   -0.98
-3       1M4RA   -0.99
-4       2HC5A   -0.99
-5       2JNFA   -0.99
-6       1U9LA   -0.99
-7       2K3IA   -0.99
-8       2JN6A   -0.99
-9       1T62A   -0.99
-10      1P9HA   -0.99
-11      1WDCC   -0.99
-12      3BBO4   -0.99
-=cut
-#################################################################################
 
-#1. generate profile-profile alignments for top templates (up to 100)
-#using three alignment methods
-
-	#at most 100 templates in total
-	#at most 50 positive templates (all positive templates)
-	#if there is two with score >0.5 or one > 0.7, select top 10 only
-
-#2. generate models using each alignment. do not use alignment combination.
-
-#3. evalaute models
 #################################################################################
 #generate profile-profile alignments between query and templates. 
 
@@ -384,10 +383,10 @@ for($rep=1;$rep<=2;$rep++)
 			$idnew = $tmp2[1];
 			print SEL $record."\n";
 			#### check if the hhm feature files of templates are complete (ECOD only have hhm, so ignore other alignments right now)
-			$file1 = "/home/casp13/deepsf_3d/scripts/P0_prepare_features/library/$idnew.hhm";
-			$file2 = "/home/casp13/deepsf_3d/scripts/P0_prepare_features/library/$idnew.shhm";
-			$pdb_file1 = "/home/casp13/deepsf_3d/scripts/database/SCOP_template_PDB/pdb/$idnew.atom";
-			$pdb_file2 = "/home/casp13/deepsf_3d/scripts/database/ECOD_template_PDB/pdb/$idnew.atom";
+			$file1 = "$GLOBAL_PATH/database/library/$idnew.hhm";
+			$file2 = "$GLOBAL_PATH/database/library/$idnew.shhm";
+			$pdb_file1 = "$GLOBAL_PATH/database/SCOP/SCOP_template_PDB/pdb/$idnew.atom";
+			$pdb_file2 = "$GLOBAL_PATH/database/ECOD/ECOD_template_PDB/pdb/$idnew.atom";
 			if(-e $file1 or -e $file2)
 			{
 				print SEL_HHM $record."\n";
@@ -416,7 +415,7 @@ for($rep=1;$rep<=2;$rep++)
 			while (@suffix)
 			{
 				$suf = shift @suffix;
-				$file = "/home/casp13/deepsf_3d/scripts/P0_prepare_features/library/$idnew.$suf";
+				$file = "$GLOBAL_PATH/database/library/$idnew.$suf";
 				if (!-f "$file")
 				{
 					$check = 2;
@@ -462,12 +461,12 @@ for($rep=1;$rep<=2;$rep++)
 	{
 		print "$incomplete_fea templates have missing profiles, need regeneration\n\n"; 
 		`mkdir $query_dir/template_profiles`;
-		print "perl /home/casp13/deepsf_3d/scripts/P0_prepare_features/gen_query_files_proc.pl $select_file_incomplete $option_file $query_dir/template_profiles\n\n";
-		`perl /home/casp13/deepsf_3d/scripts/P0_prepare_features/gen_query_files_proc.pl $select_file_incomplete $option_file $query_dir/template_profiles`;
+		print "perl $GLOBAL_PATH/scripts/P0_prepare_features/gen_query_files_proc.pl $select_file_incomplete $option_file $query_dir/template_profiles\n\n";
+		`perl $GLOBAL_PATH/scripts/P0_prepare_features/gen_query_files_proc.pl $select_file_incomplete $option_file $query_dir/template_profiles`;
 		
 		### copy profiles to library
 		
-		@suffix = ("align", "aln", "fas", "hmm", "lob", "shhm"); 
+		
 		open(IN,"$select_file_incomplete") || die "Failed to open file $select_file_incomplete\n";
 		while(<IN>)
 		{
@@ -479,16 +478,18 @@ for($rep=1;$rep<=2;$rep++)
 			{
 				$id_tmp = substr($id_tmp,1);
 			}
+			@suffix = ("align", "aln", "fas", "hmm", "lob", "shhm"); 
 			while (@suffix)
 			{
-				$suf = shift @suffix;
+				$suf = shift @suffix; 
 				$file = "$query_dir/template_profiles/library/$id_tmp.$suf";
 				if (!-f "$file")
 				{
 					print "Failed to find $file\n";
 					next;
 				}
-				`cp $query_dir/template_profiles/library/$id_tmp.$suf /home/casp13/deepsf_3d/scripts/P0_prepare_features/library/`;
+				#print "cp $query_dir/template_profiles/library/$id_tmp.$suf $GLOBAL_PATH/database/library/\n";
+				`cp $query_dir/template_profiles/library/$id_tmp.$suf $GLOBAL_PATH/database/library/`;
 			}
 		}
 		close IN;
@@ -503,18 +504,9 @@ print "$incomplete_fea templates still have missing profiles, ignore\n\n";
 #generate shhm file for the query protein, which is used by hhsearch for alignments
 
 
-
 #TEST:
 
 $query_file = abs_path($query_file);
-
-#1       2JZ5A   -0.96
-#2       2HJQA   -0.98
-#3       1M4RA   -0.99
-#4       2HC5A   -0.99
-#5       2JNFA   -0.99
-#6       1U9LA   -0.99
-#7       2K3IA   -0.99
 ##########################################################
 
 ##################################################################################
@@ -652,17 +644,18 @@ foreach $type (@suffix)
 
 	#always use advanced combination at this moment
 	#otherwise, we need to use structure alignment first.
-	print("$prosys_dir/script/pir_adv_comb_join_rotate.pl $prosys_dir/script/ $qname.can $fr_min_cover_size $fr_gap_stop_size $fr_max_linker_size $top_num $adv_comb_join_max_size $output_prefix\n");
-	system("$prosys_dir/script/pir_adv_comb_join_rotate.pl $prosys_dir/script/ $qname.can $fr_min_cover_size $fr_gap_stop_size $fr_max_linker_size $top_num $adv_comb_join_max_size $output_prefix");
+	print("$prosys_dir/pir_adv_comb_join_rotate.pl $prosys_dir $qname.can $fr_min_cover_size $fr_gap_stop_size $fr_max_linker_size $top_num $adv_comb_join_max_size $output_prefix\n");
+	system("$prosys_dir/pir_adv_comb_join_rotate.pl $prosys_dir $qname.can $fr_min_cover_size $fr_gap_stop_size $fr_max_linker_size $top_num $adv_comb_join_max_size $output_prefix");
 
 }
-	
+
 #`rm $qname.can`; 
 `mv $qname.can $query_dir/$qname.can 2>/dev/null`; 
 
 #TEST:
 MODEL_GEN:
-#generate tertiary structures from each template.
+
+#############generate tertiary structures from each template.
 print "generate structures for combined templates using multiple threads...\n";
 
 chdir $query_dir;
@@ -678,16 +671,16 @@ foreach $type (@suffix)
 	
 	if($type eq 'lob' or $type eq 'mus' or $type eq 'com')
 	{
-		print("/home/casp13/deepsf_3d/scripts/P2_alignment_generation/combine_fr_global_deepsf.pl $prosys_dir/script/ . $query_dir/$qname.complete.sel $type 5 $type-comb.pir\n");
-		system("/home/casp13/deepsf_3d/scripts/P2_alignment_generation/combine_fr_global_deepsf.pl $prosys_dir/script/ . $query_dir/$qname.complete.sel $type 5 $type-comb.pir");
+		print("$deepsf_dir/P2_alignment_generation/combine_fr_global_deepsf.pl $prosys_dir/ . $query_dir/$qname.complete.sel $type 5 $type-comb.pir\n");
+		system("$deepsf_dir/P2_alignment_generation/combine_fr_global_deepsf.pl $prosys_dir/ . $query_dir/$qname.complete.sel $type 5 $type-comb.pir");
 	}elsif($type eq 'hhs')
 	{
-		print("/home/casp13/deepsf_3d/scripts/P2_alignment_generation/combine_fr_global_deepsf.pl $prosys_dir/script/ . $query_dir/$qname.hhm.sel $type 5 $type-comb.pir\n");
-		system("/home/casp13/deepsf_3d/scripts/P2_alignment_generation/combine_fr_global_deepsf.pl $prosys_dir/script/ . $query_dir/$qname.hhm.sel $type 5 $type-comb.pir");
+		print("$deepsf_dir/P2_alignment_generation/combine_fr_global_deepsf.pl $prosys_dir/ . $query_dir/$qname.hhm.sel $type 5 $type-comb.pir\n");
+		system("$deepsf_dir/P2_alignment_generation/combine_fr_global_deepsf.pl $prosys_dir/ . $query_dir/$qname.hhm.sel $type 5 $type-comb.pir");
 	}elsif($type eq 'spem')
 	{
-		print("/home/casp13/deepsf_3d/scripts/P2_alignment_generation/combine_fr_global_deepsf.pl $prosys_dir/script/ . $query_dir/$qname.all.sel $type 5 $type-comb.pir\n");
-		system("/home/casp13/deepsf_3d/scripts/P2_alignment_generation/combine_fr_global_deepsf.pl $prosys_dir/script/ . $query_dir/$qname.all.sel $type 5 $type-comb.pir");
+		print("$deepsf_dir/P2_alignment_generation/combine_fr_global_deepsf.pl $prosys_dir/ . $query_dir/$qname.all.sel $type 5 $type-comb.pir\n");
+		system("$deepsf_dir/P2_alignment_generation/combine_fr_global_deepsf.pl $prosys_dir/ . $query_dir/$qname.all.sel $type 5 $type-comb.pir");
 	}
 	for ($i = 1; $i <= $top_num; $i++)
 	{
@@ -705,11 +698,10 @@ foreach $type (@suffix)
 }
 close LIST;
 
-#generate structures from the template
-#print("$prosys_dir/script/gen_model_proc.pl $prosys_dir $modeller_dir $atom_dir $query_dir $list_file $num_model_simulate $thread_num $qname\n");
-print("/home/casp13/deepsf_3d/scripts/P3_model_generation/gen_model_proc.pl  $prosys_dir $modeller_dir $atom_folder $query_dir $list_file $num_model_simulate $thread_num $qname\n");
-system("/home/casp13/deepsf_3d/scripts/P3_model_generation/gen_model_proc.pl  $prosys_dir $modeller_dir $atom_folder $query_dir $list_file $num_model_simulate $thread_num $qname");
-
+##########generate structures from the template
+print("$deepsf_dir/P3_model_generation/gen_model_proc.pl  $prosys_dir $modeller_dir $atom_folder $query_dir $list_file $num_model_simulate $thread_num $qname\n");
+system("$deepsf_dir/P3_model_generation/gen_model_proc.pl  $prosys_dir $modeller_dir $atom_folder $query_dir $list_file $num_model_simulate $thread_num $qname");
+	
 print "done.\n";
 
 `rm $option_file.add`; 
@@ -736,7 +728,7 @@ system("mv *pdb $deepsf_modeldir");
 system("mv *pir $deepsf_alndir");
 
 $SBROD_starttime = time();
-chdir("$assisted_tools/SBROD");
+chdir("$GLOBAL_PATH/software/SBROD");
 $cmd = "./assess_protein $deepsf_modeldir/*pdb &> $deepsf_evadir/SBROD_ranking.txt";
 
 print "generating SBROD score\n   $cmd \n\n";
@@ -836,17 +828,11 @@ foreach (@rankmodel)
 	
 	
 	$modid++;
-	print("### cp $modelfile $deepsf_top5dir_temp/casp$modid.pdb\n");
-	system("cp $modelfile $deepsf_top5dir_temp/casp$modid.pdb");
+	print("### cp $modelfile $deepsf_top5dir/casp$modid.pdb\n");
+	system("cp $modelfile $deepsf_top5dir/casp$modid.pdb");
 	print("### cp $mod_pir $deepsf_top5dir_aln/casp$modid.pir\n");
 	system("cp $mod_pir $deepsf_top5dir_aln/casp$modid.pir");
 }
-
-#format models
-print("perl $GLOBAL_PATH/scripts/formatCAMEOmodel.pl  $query_dir $fasta_file $id  $GLOBAL_PATH &>> $query_dir/formatCASPmodel.log\n");
-$status = system("perl $GLOBAL_PATH/scripts/formatCAMEOmodel.pl  $query_dir $fasta_file $id $GLOBAL_PATH &>> $query_dir/formatCASPmodel.log");
-die "ERROR! Model generation failed!" if ($status);
-#ToDo: Check if model format ran successfully
 
 print "Start to refine models to top 5 models \n";
 #format models
@@ -870,7 +856,6 @@ for($i=1;$i<=5;$i++)
 
 ############# start prepare the files for visualization
 #(1) summarize the alignment based on methods
-
 
 SUMMARY:
 
@@ -1170,10 +1155,19 @@ if(!(-e $fold_rankfile))
 }
 
 `rm -rf $query_dir/*thread*`;
+`rm -rf $query_dir/alignments_summary/tmp`;
 system("echo \"DeepSF-3D modeling finish!\" > $query_dir/DeepSF-3D.done "); 
 $finish_time = time();
 $DeepSF_diff_hrs = ($finish_time -$start_time)/3600;
 print "DeepSF-3D modeling finish! Total time: <$DeepSF_diff_hrs> hrs!\n";
+
+
+print "\nThe ranking of top SCOP folds are saved in $query_dir/fold_rank_list.SCOP`\n";
+print "The ranking of top ECOD_X folds are saved in $query_dir/fold_rank_list.ECOD_X\n";
+print "The ranking of top ECOD_H folds are saved in $query_dir/fold_rank_list.ECOD_H\n\n";
+
+print "The predicted models are saved in $deepsf_top5dir\n\n";
+
 
 print "\nFinished [$0]: ".(localtime).", models are saving in $Top5folder\n";
 

@@ -2,7 +2,7 @@ import sys
 import os
 from shutil import copyfile
 
-GLOBAL_PATH='/home/jh7x3/DLS2F/DLS2F_Project/Paper_data/DeepSF_Source_code/';
+GLOBAL_PATH='/home/casp13/deepsf_3d/Github/DeepSF/';
 sys.path.insert(0, GLOBAL_PATH+'/lib')
 
 from library import load_train_test_data_padding_with_interval,K_max_pooling1d,DLS2F_train_complex_win_filter_layer_opt

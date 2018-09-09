@@ -50,16 +50,16 @@ close FASTA;
 #read options
 $blast_dir = "";
 $clustalw_dir = ""; 
-$palign_dir = "";
-$tcoffee_dir = "";
+#$palign_dir = "";
+#$tcoffee_dir = "";
 $hmmer_dir = "";
 $prosys_dir = "";
-$prc_dir = ""; 
+#$prc_dir = ""; 
 $hhsearch_dir = "";
 $lobster_dir = ""; 
 $compass_dir = ""; 
 $pspro_dir = ""; 
-$betapro_dir = ""; 
+#$betapro_dir = ""; 
 open(OPTION, $option_file) || die "can't read option file.\n";
 while (<OPTION>)
 {
@@ -67,25 +67,13 @@ while (<OPTION>)
 	{
 		$blast_dir = $1; 
 	}
-	if ($_ =~ /^clustalw_dir\s*=\s*(\S+)/)
+	if ($_ =~ /^clustalw_dir\s*=\s*(\S+)/) 
 	{
 		$clustalw_dir = $1; 
-	}
-	if ($_ =~ /^palign_dir\s*=\s*(\S+)/)
-	{
-		$palign_dir = $1; 
-	}
-	if ($_ =~ /^tcoffee_dir\s*=\s*(\S+)/)
-	{
-		$tcoffee_dir = $1; 
 	}
 	if ($_ =~ /^hmmer_dir\s*=\s*(\S+)/)
 	{
 		$hmmer_dir = $1; 
-	}
-	if ($_ =~ /^prc_dir\s*=\s*(\S+)/)
-	{
-		$prc_dir = $1; 
 	}
 	if ($_ =~ /^hhsearch_dir\s*=\s*(\S+)/)
 	{
@@ -107,24 +95,17 @@ while (<OPTION>)
 	{
 		$pspro_dir = $1; 
 	}
-	if ($_ =~ /^betapro_dir\s*=\s*(\S+)/)
-	{
-		$betapro_dir = $1; 
-	}
 }
 close OPTION; 
 
 #check the existence of these directories 
 -d $blast_dir || die "can't find blast dir:$blast_dir.\n";
 -d $clustalw_dir || die "can't find clustalw dir.\n";
--d $palign_dir || die "can't find palign dir.\n";
--d $tcoffee_dir || die "can't find tcoffee dir.\n";
 -d $hmmer_dir || die "can't find hmmer dir.\n";
 -d $hhsearch_dir || die "can't find hhsearch dir.\n";
 -d $lobster_dir || die "can't find lobster dir.\n";
 -d $prosys_dir || die "can't find prosys dir.\n";
 -d $pspro_dir || die "can't find pspro dir.\n";
--d $betapro_dir || die "can't find betapro dir.\n";
 
 #predict ss, sa, map, bmap, align, pssm for the sequence
 #system("$prosys_dir/script/predict_ssa_map.pl $pspro_dir $betapro_dir $fasta_file $out_dir"); 

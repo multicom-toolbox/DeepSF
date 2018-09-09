@@ -5,7 +5,7 @@ import shutil
 
 import sys
 
-GLOBAL_PATH='/home/jh7x3/DLS2F/DLS2F_Project/Paper_data/DeepSF_Source_code/';
+GLOBAL_PATH='/home/casp13/deepsf_3d/Github/DeepSF/';
 sys.path.insert(0, GLOBAL_PATH+'/lib')
 
 

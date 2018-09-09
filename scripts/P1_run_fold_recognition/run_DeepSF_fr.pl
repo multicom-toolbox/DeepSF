@@ -10,138 +10,50 @@ use List::Util qw(max);
 # Read the input query file
 ######################################
 
+
+my $GLOBAL_PATH='/home/casp13/deepsf_3d/Github/DeepSF/';
+
 $OBSOLETE=7200*15; # 2h * 24   -> 2 days
 $numArgs = @ARGV;
-if($numArgs != 2)
+if($numArgs != 1)
 {   
 	print "the number of parameters is not correct!\n";
 	exit(1);
 }
 
 $input_file	= "$ARGV[0]";
-$option_file	= "$ARGV[1]";
+
+###############################Software and Data Settings####################
+
+#DeepSF tool dir
+$tool_dir = $GLOBAL_PATH;
+
+#SCRATCH tool dir
+$SCRATCH_tools = $GLOBAL_PATH.'/software/SCRATCH-1D_1.1/';
+
+#nr90_path tool dir
+#$nr90_path = '/home/casp13/MULTICOM_package/nr/nr90';
+$nr90_path = $GLOBAL_PATH.'/software/pspro2/data/nr/nr';
+
+#pspro2 tool dir
+$pspro2_tools = $GLOBAL_PATH.'/software/pspro2/';
+
+#decoy_model_number
+$decoy_model_number = 100;
+
+#final_model_number
+$final_model_number = 5;
+
+#Unicon3D prefix
+$output_prefix_name = 'DeepSF';
 
 
-if (not $option_file or not -f $option_file){
-	print "Option file $option_file does not exist!\n" if ($option_file and not -f $option_file);
-	exit(1);
-}
-
-
-#read option file
-open(OPTION, $option_file) || die "can't read option file.\n";
-
-while (<OPTION>)
-{
-	$line = $_; 
-	chomp $line;
-	
-	if ($line =~ /^tool_dir/)
-	{
-		($other, $value) = split(/=/, $line);
-		$value =~ s/\s//g; 
-		$tool_dir = $value; 
-	}
-	
-	if ($line =~ /^assisted_tools/)
-	{
-		($other, $value) = split(/=/, $line);
-		$value =~ s/\s//g; 
-		$assisted_tools = $value; 
-	}
-	
-	if ($line =~ /^hhsuite_tools/)
-	{
-		($other, $value) = split(/=/, $line);
-		$value =~ s/\s//g; 
-		$hhsuite_tools = $value; 
-	}
-	
-	if ($line =~ /^hhsearch15_tools/)
-	{
-		($other, $value) = split(/=/, $line);
-		$value =~ s/\s//g; 
-		$hhsearch15_tools = $value; 
-	}
-	
-	if ($line =~ /^hmmer3_tools/)
-	{
-		($other, $value) = split(/=/, $line);
-		$value =~ s/\s//g; 
-		$hmmer3_tools = $value; 
-	}
-	
-	if ($line =~ /^SCRATCH_tools/)
-	{
-		($other, $value) = split(/=/, $line);
-		$value =~ s/\s//g; 
-		$SCRATCH_tools = $value; 
-	}
-	
-	if ($line =~ /^nr90_path/)
-	{
-		($other, $value) = split(/=/, $line);
-		$value =~ s/\s//g; 
-		$nr90_path = $value; 
-	}
-	
-	if ($line =~ /^pspro2_tools/)
-	{
-		($other, $value) = split(/=/, $line);
-		$value =~ s/\s//g; 
-		$pspro2_tools = $value; 
-	}
-	
-	if ($line =~ /^promals_structure_MSA/)
-	{
-		($other, $value) = split(/=/, $line);
-		$value =~ s/\s//g; 
-		$promals_structure_MSA = $value; 
-	}
-	
-	if ($line =~ /^output_prefix_name/)
-	{
-		($other, $value) = split(/=/, $line);
-		$value =~ s/\s//g; 
-		$output_prefix_name = $value; 
-	}
-	
-	if ($line =~ /^decoy_model_number/)
-	{
-		($other, $value) = split(/=/, $line);
-		$value =~ s/\s//g; 
-		$decoy_model_number = $value; 
-	}
-	
-	if ($line =~ /^final_model_number/)
-	{
-		($other, $value) = split(/=/, $line);
-		$value =~ s/\s//g; 
-		$final_model_number = $value; 
-	}
-
-}
 
 if (! -d $tool_dir)
 {
         die "can't find tool_dir $tool_dir directory.\n";
 }
-if (! -d $assisted_tools)
-{
-        die "can't find assisted_tools $assisted_tools directory.\n";
-}
-if (! -d $hhsuite_tools)
-{
-        die "can't find hhsuite_tools $hhsuite_tools directory.\n";
-}
-if (! -d $hhsearch15_tools)
-{
-        die "can't find hhsearch15_tools $hhsearch15_tools directory.\n";
-}
-if (! -d $hmmer3_tools)
-{
-        die "can't find hmmer3_tools $hmmer3_tools directory.\n";
-}
+
 if (! -d $pspro2_tools)
 {
         die "can't find pspro2_tools $pspro2_tools directory.\n";
@@ -156,8 +68,6 @@ if (! -e "$nr90_path.00.phr")
         die "can't find $nr90_path.00.phr.\n";
 }
 
-
-$GLOBAL_PATH = $tool_dir;
 
  
 open(fi,"<$input_file");
@@ -436,8 +346,8 @@ if($unprocessed_num >0)
 	}else{
 	
 		`mkdir -m 777 $feature_pssm_dir`;
-		print LOG "python $GLOBAL_PATH/scripts/P1_run_fold_recognition/run_many_sequence.py --inputfile  $task_dir/$model_dir/initial_model_name.unprocessed.list  --seqdir $task_dir/$model_dir/ --script_dir $GLOBAL_PATH/P1_run_fold_recognition/ --pspro_dir $pspro2_tools --nr_db $nr90_path  --big_db $pspro2_tools/data/big/big_98_X  --outputdir $feature_pssm_dir\n";
-		system("python $GLOBAL_PATH/scripts/P1_run_fold_recognition/run_many_sequence.py --inputfile  $task_dir/$model_dir/initial_model_name.unprocessed.list  --seqdir $task_dir/$model_dir/ --script_dir $GLOBAL_PATH/P1_run_fold_recognition/ --pspro_dir $pspro2_tools --nr_db $nr90_path  --big_db $pspro2_tools/data/big/big_98_X  --outputdir $feature_pssm_dir");
+		print LOG "python $GLOBAL_PATH/scripts/P1_run_fold_recognition/run_many_sequence.py --inputfile  $task_dir/$model_dir/initial_model_name.unprocessed.list  --seqdir $task_dir/$model_dir/ --script_dir $GLOBAL_PATH/scripts/P1_run_fold_recognition/ --pspro_dir $pspro2_tools --nr_db $nr90_path  --big_db $pspro2_tools/data/big/big_98_X  --outputdir $feature_pssm_dir\n";
+		system("python $GLOBAL_PATH/scripts/P1_run_fold_recognition/run_many_sequence.py --inputfile  $task_dir/$model_dir/initial_model_name.unprocessed.list  --seqdir $task_dir/$model_dir/ --script_dir $GLOBAL_PATH/scripts/P1_run_fold_recognition/ --pspro_dir $pspro2_tools --nr_db $nr90_path  --big_db $pspro2_tools/data/big/big_98_X  --outputdir $feature_pssm_dir");
 		print LOG "perl $GLOBAL_PATH/scripts/P1_run_fold_recognition/process_pssm_file.pl  $feature_pssm_dir/pssm_features/    $task_dir/$jobname-features/ \n";
 		system("perl $GLOBAL_PATH/scripts/P1_run_fold_recognition/process_pssm_file.pl  $feature_pssm_dir/pssm_features/    $task_dir/$jobname-features/");
 	}		
@@ -475,9 +385,9 @@ if(-e "$predict_dir/$jobname.prediction" and -e "$predict_dir/$jobname.hidden_fe
 {
 	print "$predict_dir/$jobname.prediction and $predict_dir/$jobname.hidden_feature and $predict_dir/$jobname.rank_list were generated!\n\n";
 }else{
-	print LOG "python $GLOBAL_PATH/scripts/P1_run_fold_recognition/DeepSF_predict.py  $task_dir/$model_dir/$initial_model_name.list_with_fea $GLOBAL_PATH/models/model_SimilarityReduction.json   $GLOBAL_PATH/models/model_SimilarityReduction.h5     $task_dir/$feature_dir  $task_dir/$feature_dir    $task_dir/$predict_dir/ 30 $GLOBAL_PATH/datasets/fold_label_relation2.txt \n\n";
-	print "python $GLOBAL_PATH/scripts/P1_run_fold_recognition/DeepSF_predict.py  $task_dir/$model_dir/$initial_model_name.list_with_fea $GLOBAL_PATH/models/model_SimilarityReduction.json    $GLOBAL_PATH/models/model_SimilarityReduction.h5     $task_dir/$feature_dir  $task_dir/$feature_dir    $task_dir/$predict_dir/ 30 $GLOBAL_PATH/datasets/fold_label_relation2.txt \n\n";
-	`python $GLOBAL_PATH/scripts/P1_run_fold_recognition/DeepSF_predict.py  $task_dir/$model_dir/$initial_model_name.list_with_fea $GLOBAL_PATH/models/model_SimilarityReduction.json    $GLOBAL_PATH/models/model_SimilarityReduction.h5     $task_dir/$feature_dir  $task_dir/$feature_dir    $task_dir/$predict_dir/ 30 $GLOBAL_PATH/datasets/fold_label_relation2.txt`;
+	print LOG "python $GLOBAL_PATH/scripts/P1_run_fold_recognition/DeepSF_predict.py  $task_dir/$model_dir/$initial_model_name.list_with_fea $GLOBAL_PATH/models/model_SimilarityReduction.json   $GLOBAL_PATH/models/model_SimilarityReduction.h5     $task_dir/$feature_dir  $task_dir/$feature_dir    $task_dir/$predict_dir/ 30 $GLOBAL_PATH/database/SCOP/fold_label_relation2.txt\n\n";
+	print "python $GLOBAL_PATH/scripts/P1_run_fold_recognition/DeepSF_predict.py  $task_dir/$model_dir/$initial_model_name.list_with_fea $GLOBAL_PATH/models/model_SimilarityReduction.json    $GLOBAL_PATH/models/model_SimilarityReduction.h5     $task_dir/$feature_dir  $task_dir/$feature_dir    $task_dir/$predict_dir/ 30 $GLOBAL_PATH/database/SCOP/fold_label_relation2.txt\n\n";
+	`python $GLOBAL_PATH/scripts/P1_run_fold_recognition/DeepSF_predict.py  $task_dir/$model_dir/$initial_model_name.list_with_fea $GLOBAL_PATH/models/model_SimilarityReduction.json    $GLOBAL_PATH/models/model_SimilarityReduction.h5     $task_dir/$feature_dir  $task_dir/$feature_dir    $task_dir/$predict_dir/ 30 $GLOBAL_PATH/database/SCOP/fold_label_relation2.txt`;
 }
 
 if(-e "$predict_dir_ECOD_X/$jobname.prediction" and -e "$predict_dir_ECOD_X/$jobname.hidden_feature" and -e "$predict_dir_ECOD_X/$jobname.rank_list")
@@ -501,8 +411,8 @@ if(-e "$predict_dir_ECOD_H/$jobname.prediction" and -e "$predict_dir_ECOD_H/$job
 
 ##############################  visualize the top 10 predictions in SCOP 
 
-print LOG "python  $GLOBAL_PATH/scripts/P1_run_fold_recognition/Analyze_top5_folds.py   $task_dir/$model_dir/$initial_model_name.list_with_fea    $GLOBAL_PATH/datasets/fold_label_relation2.txt $GLOBAL_PATH/datasets/Traindata.list   $GLOBAL_PATH/scripts/database_SCOP/SCOP95Ratio8_2_DCNN_results/ $task_dir/$predict_dir/   5  $task_dir/$KL_hidden_dir\n";
-system("python  $GLOBAL_PATH/scripts/P1_run_fold_recognition/Analyze_top5_folds.py   $task_dir/$model_dir/$initial_model_name.list_with_fea    $GLOBAL_PATH/datasets/fold_label_relation2.txt $GLOBAL_PATH/datasets/Traindata.list  $GLOBAL_PATH/scripts/database_SCOP/SCOP95Ratio8_2_DCNN_results/ $task_dir/$predict_dir/   5  $task_dir/$KL_hidden_dir ");
+print LOG "python  $GLOBAL_PATH/scripts/P1_run_fold_recognition/Analyze_top5_folds.py   $task_dir/$model_dir/$initial_model_name.list_with_fea    $GLOBAL_PATH/database/SCOP/fold_label_relation2.txt $GLOBAL_PATH/database/SCOP/Traindata.list   $GLOBAL_PATH/database/SCOP/SCOP95Ratio8_2_DCNN_results/ $task_dir/$predict_dir/   5  $task_dir/$KL_hidden_dir\n";
+system("python  $GLOBAL_PATH/scripts/P1_run_fold_recognition/Analyze_top5_folds.py   $task_dir/$model_dir/$initial_model_name.list_with_fea    $GLOBAL_PATH/database/SCOP/fold_label_relation2.txt $GLOBAL_PATH/database/SCOP/Traindata.list  $GLOBAL_PATH/database/SCOP/SCOP95Ratio8_2_DCNN_results/ $task_dir/$predict_dir/   5  $task_dir/$KL_hidden_dir ");
 
 
 open(TMPFILE,"$task_dir/$model_dir/$initial_model_name.list_with_fea") || die "Failed to run $task_dir/$model_dir/$initial_model_name.list_with_fea\n";
@@ -516,12 +426,12 @@ while(<TMPFILE>)
 	$selected_query_file = "$listdir/$pdb_name.querylist";
 	
 	## this need be updated to pdb-based sequence in CASP13, currently, still use seq-based sequences
-    print LOG "perl $GLOBAL_PATH/scripts/calculate_hidden_KL_score_list.pl  $selected_templist_file $selected_query_file $GLOBAL_PATH/scripts/database_SCOP/SCOP95Ratio8_2_DCNN_results/   $task_dir/$predict_dir/   $task_dir/$KL_hidden_dir/score_ranking_dir  $pdb_name\n";
-    $status = system("perl $GLOBAL_PATH/scripts/calculate_hidden_KL_score_list.pl  $selected_templist_file $selected_query_file $GLOBAL_PATH/scripts/database_SCOP/SCOP95Ratio8_2_DCNN_results/   $task_dir/$predict_dir/   $task_dir/$KL_hidden_dir/score_ranking_dir  $pdb_name");
+    print LOG "perl $GLOBAL_PATH/scripts/P1_run_fold_recognition/calculate_hidden_KL_score_list.pl  $selected_templist_file $selected_query_file $GLOBAL_PATH/database/SCOP/SCOP95Ratio8_2_DCNN_results/   $task_dir/$predict_dir/   $task_dir/$KL_hidden_dir/score_ranking_dir  $pdb_name\n";
+    $status = system("perl $GLOBAL_PATH/scripts/P1_run_fold_recognition/calculate_hidden_KL_score_list.pl  $selected_templist_file $selected_query_file $GLOBAL_PATH/database/SCOP/SCOP95Ratio8_2_DCNN_results/   $task_dir/$predict_dir/   $task_dir/$KL_hidden_dir/score_ranking_dir  $pdb_name");
     if($status)
 	{
-		print LOG  "Failed to run <perl $GLOBAL_PATH/scripts/calculate_hidden_KL_score_list.pl  $selected_templist_file $selected_query_file $GLOBAL_PATH/scripts/database_SCOP/SCOP95Ratio8_2_DCNN_results/   $task_dir/$predict_dir/   $task_dir/$KL_hidden_dir/score_ranking_dir  $pdb_name>\n";
-		die "Failed to run <perl $GLOBAL_PATH/scripts/calculate_hidden_KL_score_list.pl  $selected_templist_file $selected_query_file $GLOBAL_PATH/scripts/database_SCOP/SCOP95Ratio8_2_DCNN_results/   $task_dir/$predict_dir/   $task_dir/$KL_hidden_dir/score_ranking_dir  $pdb_name>\n";
+		print LOG  "Failed to run <perl $GLOBAL_PATH/scripts/calculate_hidden_KL_score_list.pl  $selected_templist_file $selected_query_file $GLOBAL_PATH/database/SCOP/SCOP95Ratio8_2_DCNN_results/   $task_dir/$predict_dir/   $task_dir/$KL_hidden_dir/score_ranking_dir  $pdb_name>\n";
+		die "Failed to run <perl $GLOBAL_PATH/scripts/calculate_hidden_KL_score_list.pl  $selected_templist_file $selected_query_file $GLOBAL_PATH/database/SCOP/SCOP95Ratio8_2_DCNN_results/   $task_dir/$predict_dir/   $task_dir/$KL_hidden_dir/score_ranking_dir  $pdb_name>\n";
 	}
 	
     $KL_file_check = "$task_dir/$KL_hidden_dir/score_ranking_dir/${pdb_name}_KL_calc.done";
@@ -545,12 +455,12 @@ while(<TMPFILE>)
        
 
 		## need use updated template pdb database in CASP13
-	    print LOG "perl $GLOBAL_PATH/scripts/combine_top10_hidden_for_5folds_CAMEO.pl  $KL_score_file $pdb_name   $GLOBAL_PATH/scripts/database_SCOP/SCOP95Ratio8_2_DCNN_results/  $task_dir/$predict_dir/  $task_dir/$KL_hidden_dir/score_ranking_dir  $hidden_feature_file $GLOBAL_PATH\n";
-        $status = system("perl $GLOBAL_PATH/scripts/combine_top10_hidden_for_5folds_CAMEO.pl  $KL_score_file $pdb_name   $GLOBAL_PATH/scripts/database_SCOP/SCOP95Ratio8_2_DCNN_results/  $task_dir/$predict_dir/  $task_dir/$KL_hidden_dir/score_ranking_dir  $hidden_feature_file $GLOBAL_PATH");
+	    print LOG "perl $GLOBAL_PATH/scripts//P1_run_fold_recognition/combine_top10_hidden_for_5folds_CAMEO.pl  $KL_score_file $pdb_name   $GLOBAL_PATH/database/SCOP/SCOP95Ratio8_2_DCNN_results/  $task_dir/$predict_dir/  $task_dir/$KL_hidden_dir/score_ranking_dir  $hidden_feature_file $GLOBAL_PATH\n";
+        $status = system("perl $GLOBAL_PATH/scripts//P1_run_fold_recognition/combine_top10_hidden_for_5folds_CAMEO.pl  $KL_score_file $pdb_name   $GLOBAL_PATH/database/SCOP/SCOP95Ratio8_2_DCNN_results/  $task_dir/$predict_dir/  $task_dir/$KL_hidden_dir/score_ranking_dir  $hidden_feature_file $GLOBAL_PATH");
         if($status)
 		{
-			print LOG  "Failed to run <perl $GLOBAL_PATH/scripts/combine_top10_hidden_for_5folds_CAMEO.pl  $KL_score_file $pdb_name   $GLOBAL_PATH/scripts/database_SCOP/SCOP95Ratio8_2_DCNN_results/  $task_dir/$predict_dir/  $task_dir/$KL_hidden_dir/score_ranking_dir  $hidden_feature_file $GLOBAL_PATH>\n";
-			die "Failed to run <perl $GLOBAL_PATH/scripts/combine_top10_hidden_for_5folds_CAMEO.pl  $KL_score_file $pdb_name   $GLOBAL_PATH/scripts/database_SCOP/SCOP95Ratio8_2_DCNN_results/  $task_dir/$predict_dir/  $task_dir/$KL_hidden_dir/score_ranking_dir  $hidden_feature_file $GLOBAL_PATH>\n";
+			print LOG  "Failed to run <perl $GLOBAL_PATH/scripts//P1_run_fold_recognition/combine_top10_hidden_for_5folds_CAMEO.pl  $KL_score_file $pdb_name   $GLOBAL_PATH/database/SCOP/SCOP95Ratio8_2_DCNN_results/  $task_dir/$predict_dir/  $task_dir/$KL_hidden_dir/score_ranking_dir  $hidden_feature_file $GLOBAL_PATH>\n";
+			die "Failed to run <perl $GLOBAL_PATH/scripts//P1_run_fold_recognition/combine_top10_hidden_for_5folds_CAMEO.pl  $KL_score_file $pdb_name   $GLOBAL_PATH/database/SCOP/SCOP95Ratio8_2_DCNN_results/  $task_dir/$predict_dir/  $task_dir/$KL_hidden_dir/score_ranking_dir  $hidden_feature_file $GLOBAL_PATH>\n";
 		}
 		
         
@@ -574,12 +484,12 @@ close TMPFILE;
 
 
 
-$fold_description = "$GLOBAL_PATH/scripts/database_SCOP/dir.des.scop.1.75_class.txt";
-$family_description = "$GLOBAL_PATH/scripts/database_SCOP/dir.des.scop.1.75_family.txt";
+$fold_description = "$GLOBAL_PATH/database/SCOP/dir.des.scop.1.75_class.txt";
+$family_description = "$GLOBAL_PATH/database/SCOP/dir.des.scop.1.75_family.txt";
 ### combine the prediction with top1 template 
 
-print LOG "perl  $GLOBAL_PATH/scripts/combine_prediction_with_template.pl   $task_dir/$model_dir/$initial_model_name.list_with_fea  $task_dir/$predict_dir/ $GLOBAL_PATH/scripts/database_SCOP/Traindata.list  $task_dir/$KL_hidden_dir/score_ranking_dir  $fold_description $family_description $results_dir_targets/$Final_model_dir\n";
-system("perl  $GLOBAL_PATH/scripts/combine_prediction_with_template.pl   $task_dir/$model_dir/$initial_model_name.list_with_fea  $task_dir/$predict_dir/  $GLOBAL_PATH/scripts/database_SCOP/Traindata.list  $task_dir/$KL_hidden_dir/score_ranking_dir  $fold_description $family_description $results_dir_targets/$Final_model_dir");
+print LOG "perl  $GLOBAL_PATH/scripts/P1_run_fold_recognition/combine_prediction_with_template.pl   $task_dir/$model_dir/$initial_model_name.list_with_fea  $task_dir/$predict_dir/ $GLOBAL_PATH/database/SCOP/Traindata.list  $task_dir/$KL_hidden_dir/score_ranking_dir  $fold_description $family_description $results_dir_targets/$Final_model_dir\n";
+system("perl  $GLOBAL_PATH/scripts/P1_run_fold_recognition/combine_prediction_with_template.pl   $task_dir/$model_dir/$initial_model_name.list_with_fea  $task_dir/$predict_dir/  $GLOBAL_PATH/database/SCOP/Traindata.list  $task_dir/$KL_hidden_dir/score_ranking_dir  $fold_description $family_description $results_dir_targets/$Final_model_dir");
 
 
 
@@ -601,17 +511,12 @@ while(<INFILE>)
 	{
 		$firstprotein=$pdb_name;
 	}
-	#$hiddenfile = "$task_dir/$KL_hidden_dir/score_ranking_dir/${pdb_name}_template_fea.txt";
-	#$hiddenfile_heatmap = "$task_dir/$KL_hidden_dir/score_ranking_dir/${pdb_name}_template_fea.jpeg";
-	#print LOG "xvfb-run --server-args=\"-screen 0 1024x768x24\"  Rscript /var/www/cgi-bin/DeepSF/scripts/Visualize_hidden_heatmap.R $hiddenfile $hiddenfile_heatmap\n";
-	#system("xvfb-run --server-args=\"-screen 0 1024x768x24\"  Rscript /var/www/cgi-bin/DeepSF/scripts/Visualize_hidden_heatmap.R $hiddenfile $hiddenfile_heatmap");
-	
 	
 	$rankfile = "$task_dir/$predict_dir/${pdb_name}.rank_list";
 	$rankfile_image = "$task_dir/$predict_dir/${pdb_name}_prediction_prob.png";
 	#sleep(2);
-	print LOG "python $GLOBAL_PATH/scripts/Visualize_prediction.py  $rankfile $rankfile_image\n";
-	system("python $GLOBAL_PATH/scripts/Visualize_prediction.py  $rankfile $rankfile_image");
+	print LOG "python $GLOBAL_PATH/scripts/P1_run_fold_recognition/Visualize_prediction.py  $rankfile $rankfile_image\n";
+	system("python $GLOBAL_PATH/scripts/P1_run_fold_recognition/Visualize_prediction.py  $rankfile $rankfile_image");
 	`cp $rankfile_image $results_dir_targets/$Final_prediction_dir/`;
 	
 }
@@ -623,24 +528,9 @@ print LOG "\n\n";
 
 ##############################  visualize the top 10 predictions in ECOD_X 
 
+print LOG "python  $GLOBAL_PATH/scripts/P1_run_fold_recognition/Analyze_top5_folds.py   $task_dir/$model_dir/$initial_model_name.list_with_fea   $GLOBAL_PATH/database/ECOD/ECOD_X/ecod.latest.fasta_id90_Xgroup_to_label_relation2.txt  $GLOBAL_PATH/database/ECOD/ECOD_X/XGroup2length_withName_hasFea.list     $GLOBAL_PATH/scripts/database_ECOD_X/deepsf_results/ $task_dir/$predict_dir_ECOD_X/   5  $task_dir/$KL_hidden_dir_ECOD_X\n";
+system("python  $GLOBAL_PATH/scripts/P1_run_fold_recognition/Analyze_top5_folds.py   $task_dir/$model_dir/$initial_model_name.list_with_fea   $GLOBAL_PATH/database/ECOD/ECOD_X/ecod.latest.fasta_id90_Xgroup_to_label_relation2.txt  $GLOBAL_PATH/database/ECOD/ECOD_X/XGroup2length_withName_hasFea.list    $GLOBAL_PATH/scripts/database_ECOD_X/deepsf_results/ $task_dir/$predict_dir_ECOD_X/   5  $task_dir/$KL_hidden_dir_ECOD_X");
 
-#if($exp_test_env eq 'CASP11')
-#{
-#	$casp_filter_db_list='/var/www/cgi-bin/deepsf_3d/CASP13_development/targets/casp11/ECOD/develop45-20140612/ecod_filtered_out_for_casp11.txt';
-#	print LOG "python  $GLOBAL_PATH/scripts/Analyze_top5_folds_casp11.py   $task_dir/$model_dir/$initial_model_name.list_with_fea   /var/www/cgi-bin/DeepSF/database_ECOD_X/ecod.latest.fasta_id90_Xgroup_to_label_relation2.txt  /var/www/cgi-bin/DeepSF/database_ECOD_X/XGroup2length_withName_hasFea.list     /var/www/cgi-bin/DeepSF/database_ECOD_X/deepsf_results/ $task_dir/$predict_dir_ECOD_X/   5  $task_dir/$KL_hidden_dir_ECOD_X $casp_filter_db_list\n";
-#	system("python  $GLOBAL_PATH/scripts/Analyze_top5_folds_casp11.py   $task_dir/$model_dir/$initial_model_name.list_with_fea   /var/www/cgi-bin/DeepSF/database_ECOD_X/ecod.latest.fasta_id90_Xgroup_to_label_relation2.txt  /var/www/cgi-bin/DeepSF/database_ECOD_X/XGroup2length_withName_hasFea.list     /var/www/cgi-bin/DeepSF/database_ECOD_X/deepsf_results/ $task_dir/$predict_dir_ECOD_X/   5  $task_dir/$KL_hidden_dir_ECOD_X $casp_filter_db_list");
-#}elsif($exp_test_env eq 'CASP12')
-#{
-#	$casp_filter_db_list='/var/www/cgi-bin/deepsf_3d/CASP13_development/targets/casp12/ECOD/develop45-20140612/ecod_filtered_out_for_casp12.txt';
-#	print LOG "python  $GLOBAL_PATH/scripts/Analyze_top5_folds_casp11.py   $task_dir/$model_dir/$initial_model_name.list_with_fea   /var/www/cgi-bin/DeepSF/database_ECOD_X/ecod.latest.fasta_id90_Xgroup_to_label_relation2.txt  /var/www/cgi-bin/DeepSF/database_ECOD_X/XGroup2length_withName_hasFea.list     /var/www/cgi-bin/DeepSF/database_ECOD_X/deepsf_results/ $task_dir/$predict_dir_ECOD_X/   5  $task_dir/$KL_hidden_dir_ECOD_X $casp_filter_db_list\n";
-#	system("python  $GLOBAL_PATH/scripts/Analyze_top5_folds_casp11.py   $task_dir/$model_dir/$initial_model_name.list_with_fea   /var/www/cgi-bin/DeepSF/database_ECOD_X/ecod.latest.fasta_id90_Xgroup_to_label_relation2.txt  /var/www/cgi-bin/DeepSF/database_ECOD_X/XGroup2length_withName_hasFea.list     /var/www/cgi-bin/DeepSF/database_ECOD_X/deepsf_results/ $task_dir/$predict_dir_ECOD_X/   5  $task_dir/$KL_hidden_dir_ECOD_X $casp_filter_db_list");
-#}else{
-	print LOG "python  $GLOBAL_PATH/scripts/Analyze_top5_folds.py   $task_dir/$model_dir/$initial_model_name.list_with_fea   $GLOBAL_PATH/scripts/database_ECOD_X/ecod.latest.fasta_id90_Xgroup_to_label_relation2.txt  $GLOBAL_PATH/scripts/database_ECOD_X/XGroup2length_withName_hasFea.list     $GLOBAL_PATH/scripts/database_ECOD_X/deepsf_results/ $task_dir/$predict_dir_ECOD_X/   5  $task_dir/$KL_hidden_dir_ECOD_X\n";
-	system("python  $GLOBAL_PATH/scripts/Analyze_top5_folds.py   $task_dir/$model_dir/$initial_model_name.list_with_fea   $GLOBAL_PATH/scripts/database_ECOD_X/ecod.latest.fasta_id90_Xgroup_to_label_relation2.txt  $GLOBAL_PATH/scripts/database_ECOD_X/XGroup2length_withName_hasFea.list    $GLOBAL_PATH/scripts/database_ECOD_X/deepsf_results/ $task_dir/$predict_dir_ECOD_X/   5  $task_dir/$KL_hidden_dir_ECOD_X");
-#}
-#
-#
-#
 
 open(TMPFILE,"$task_dir/$model_dir/$initial_model_name.list_with_fea") || die "Failed to run $task_dir/$model_dir/$initial_model_name.list_with_fea\n";
 while(<TMPFILE>)
@@ -652,12 +542,12 @@ while(<TMPFILE>)
 	$selected_templist_file = "$listdir/$pdb_name.templist";
 	$selected_query_file = "$listdir/$pdb_name.querylist";
 	
-    print LOG "perl $GLOBAL_PATH/scripts/calculate_hidden_KL_score_list_ECOD_X.pl  $selected_templist_file $selected_query_file $GLOBAL_PATH/scripts/database_ECOD_X/deepsf_results/   $task_dir/$predict_dir_ECOD_X/   $task_dir/$KL_hidden_dir_ECOD_X/score_ranking_dir  $pdb_name\n";
-    $status = system("perl $GLOBAL_PATH/scripts/calculate_hidden_KL_score_list_ECOD_X.pl  $selected_templist_file $selected_query_file $GLOBAL_PATH/scripts/database_ECOD_X/deepsf_results/   $task_dir/$predict_dir_ECOD_X/   $task_dir/$KL_hidden_dir_ECOD_X/score_ranking_dir  $pdb_name");
+    print LOG "perl $GLOBAL_PATH/scripts/P1_run_fold_recognition/calculate_hidden_KL_score_list_ECOD_X.pl  $selected_templist_file $selected_query_file $GLOBAL_PATH/database/ECOD/ECOD_X/deepsf_results/   $task_dir/$predict_dir_ECOD_X/   $task_dir/$KL_hidden_dir_ECOD_X/score_ranking_dir  $pdb_name\n";
+    $status = system("perl $GLOBAL_PATH/scripts/P1_run_fold_recognition/calculate_hidden_KL_score_list_ECOD_X.pl  $selected_templist_file $selected_query_file $GLOBAL_PATH/database/ECOD/ECOD_X/deepsf_results/   $task_dir/$predict_dir_ECOD_X/   $task_dir/$KL_hidden_dir_ECOD_X/score_ranking_dir  $pdb_name");
     if($status)
 	{
-		print LOG  "Failed to run <perl $GLOBAL_PATH/scripts/calculate_hidden_KL_score_list_ECOD_X.pl  $selected_templist_file $selected_query_file  $GLOBAL_PATH/scripts/database_ECOD_X/deepsf_results/   $task_dir/$predict_dir_ECOD_X/   $task_dir/$KL_hidden_dir_ECOD_X/score_ranking_dir  $pdb_name>\n";
-		die "Failed to run <perl $GLOBAL_PATH/scripts/calculate_hidden_KL_score_list_ECOD_X.pl  $selected_templist_file $selected_query_file $GLOBAL_PATH/scripts/database_ECOD_X/deepsf_results/   $task_dir/$predict_dir_ECOD_X/   $task_dir/$KL_hidden_dir_ECOD_X/score_ranking_dir  $pdb_name>\n";
+		print LOG  "Failed to run <perl $GLOBAL_PATH/scripts/P1_run_fold_recognition/calculate_hidden_KL_score_list_ECOD_X.pl  $selected_templist_file $selected_query_file  $GLOBAL_PATH/database/ECOD/ECOD_X/deepsf_results/   $task_dir/$predict_dir_ECOD_X/   $task_dir/$KL_hidden_dir_ECOD_X/score_ranking_dir  $pdb_name>\n";
+		die "Failed to run <perl $GLOBAL_PATH/scripts/P1_run_fold_recognition/calculate_hidden_KL_score_list_ECOD_X.pl  $selected_templist_file $selected_query_file $GLOBAL_PATH/database/ECOD/ECOD_X/deepsf_results/   $task_dir/$predict_dir_ECOD_X/   $task_dir/$KL_hidden_dir_ECOD_X/score_ranking_dir  $pdb_name>\n";
 	}
 	
     $KL_file_check = "$task_dir/$KL_hidden_dir_ECOD_X/score_ranking_dir/${pdb_name}_KL_calc.done";
@@ -680,12 +570,12 @@ while(<TMPFILE>)
         $KL_score_file = "$task_dir/$KL_hidden_dir_ECOD_X/score_ranking_dir/${pdb_name}.KL_output";
         
 		## need use updated template pdb database in CASP13
-		print LOG "perl $GLOBAL_PATH/scripts/combine_top10_hidden_for_5folds_ECOD_X_CAMEO.pl  $KL_score_file $pdb_name   $GLOBAL_PATH/scripts/database_ECOD_X/deepsf_results/  $task_dir/$predict_dir_ECOD_X/  $task_dir/$KL_hidden_dir_ECOD_X/score_ranking_dir  $hidden_feature_file $GLOBAL_PATH\n";
-        $status = system("perl $GLOBAL_PATH/scripts/combine_top10_hidden_for_5folds_ECOD_X_CAMEO.pl  $KL_score_file $pdb_name   $GLOBAL_PATH/scripts/database_ECOD_X/deepsf_results/  $task_dir/$predict_dir_ECOD_X/  $task_dir/$KL_hidden_dir_ECOD_X/score_ranking_dir  $hidden_feature_file $GLOBAL_PATH");
+		print LOG "perl $GLOBAL_PATH/scripts/P1_run_fold_recognition/combine_top10_hidden_for_5folds_ECOD_X_CAMEO.pl  $KL_score_file $pdb_name   $GLOBAL_PATH/database/ECOD/ECOD_X/deepsf_results/  $task_dir/$predict_dir_ECOD_X/  $task_dir/$KL_hidden_dir_ECOD_X/score_ranking_dir  $hidden_feature_file $GLOBAL_PATH\n";
+        $status = system("perl $GLOBAL_PATH/scripts/P1_run_fold_recognition/combine_top10_hidden_for_5folds_ECOD_X_CAMEO.pl  $KL_score_file $pdb_name   $GLOBAL_PATH/database/ECOD/ECOD_X/deepsf_results/  $task_dir/$predict_dir_ECOD_X/  $task_dir/$KL_hidden_dir_ECOD_X/score_ranking_dir  $hidden_feature_file $GLOBAL_PATH");
         if($status)
 		{
-			print LOG  "Failed to run <perl $GLOBAL_PATH/scripts/combine_top10_hidden_for_5folds_ECOD_X_CAMEO.pl  $KL_score_file $pdb_name  $GLOBAL_PATH/scripts/database_ECOD_X/deepsf_results/  $task_dir/$predict_dir_ECOD_X/  $task_dir/$KL_hidden_dir_ECOD_X/score_ranking_dir  $hidden_feature_file $GLOBAL_PATH\n";
-			die "Failed to run <perl $GLOBAL_PATH/scripts/combine_top10_hidden_for_5folds_ECOD_X_CAMEO.pl  $KL_score_file $pdb_name   $GLOBAL_PATH/scripts/database_ECOD_X/deepsf_results/  $task_dir/$predict_dir_ECOD_X/  $task_dir/$KL_hidden_dir_ECOD_X/score_ranking_dir  $hidden_feature_file $GLOBAL_PATH\n";
+			print LOG  "Failed to run <perl $GLOBAL_PATH/scripts/P1_run_fold_recognition/combine_top10_hidden_for_5folds_ECOD_X_CAMEO.pl  $KL_score_file $pdb_name  $GLOBAL_PATH/database/ECOD/ECOD_X/deepsf_results/  $task_dir/$predict_dir_ECOD_X/  $task_dir/$KL_hidden_dir_ECOD_X/score_ranking_dir  $hidden_feature_file $GLOBAL_PATH\n";
+			die "Failed to run <perl $GLOBAL_PATH/scripts/P1_run_fold_recognition/combine_top10_hidden_for_5folds_ECOD_X_CAMEO.pl  $KL_score_file $pdb_name   $GLOBAL_PATH/database/ECOD/ECOD_X/deepsf_results/  $task_dir/$predict_dir_ECOD_X/  $task_dir/$KL_hidden_dir_ECOD_X/score_ranking_dir  $hidden_feature_file $GLOBAL_PATH\n";
 		}
 		
         
@@ -706,16 +596,15 @@ while(<TMPFILE>)
 	}	
 }
 close TMPFILE;
-#print LOG "$curr_time\nMake predictions:\npython /var/www/cgi-bin/DeepSF/DeepSF_predict.py  $task_dir/$model_dir/$initial_model_name.list_with_fea /var/www/cgi-bin/DeepSF/database/model_ResCNN_pssm-train-iterative-padding-withaa-complex-kmax30-win6_10_bias-sigmoid.json  /var/www/cgi-bin/DeepSF/database/model_ResCNN_pssm-train-weight-iterative-padding-withaa-complex-kmax30-win6_10_bias-sigmoid_Te80.h5    $task_dir/$feature_dir  $task_dir/$feature_dir    $task_dir/$predict_dir/ 30 /var/www/cgi-bin/DeepSF/database/fold_label_relation2.txt \n";
-#system("python /var/www/cgi-bin/DeepSF/DeepSF_predict.py  $task_dir/$model_dir/$initial_model_name.list_with_fea /var/www/cgi-bin/DeepSF/database/model_ResCNN_pssm-train-iterative-padding-withaa-complex-kmax30-win6_10_bias-sigmoid.json  /var/www/cgi-bin/DeepSF/database/model_ResCNN_pssm-train-weight-iterative-padding-withaa-complex-kmax30-win6_10_bias-sigmoid_Te80.h5    $task_dir/$feature_dir  $task_dir/$feature_dir    $task_dir/$predict_dir/ 30 /var/www/cgi-bin/DeepSF/database/fold_label_relation2.txt");
 
 
-$fold_description = "$GLOBAL_PATH/scripts/database_ECOD_X/ecod.latest.fasta_id90_webinfo.txt";
-$family_description = "$GLOBAL_PATH/scripts/database_ECOD_X/ecod.latest.fasta_id90_webinfo.txt";
+
+$fold_description = "$GLOBAL_PATH/database/ECOD/ECOD_X/ecod.latest.fasta_id90_webinfo.txt";
+$family_description = "$GLOBAL_PATH/database/ECOD/ECOD_X/ecod.latest.fasta_id90_webinfo.txt";
 ### combine the prediction with top1 template 
 
-print LOG "perl  $GLOBAL_PATH/scripts/combine_prediction_with_template_ECOD_X.pl   $task_dir/$model_dir/$initial_model_name.list_with_fea  $task_dir/$predict_dir_ECOD_X/  $GLOBAL_PATH/scripts/database_ECOD_X/XGroup2length_withName_hasFea.list  $task_dir/$KL_hidden_dir_ECOD_X/score_ranking_dir  $fold_description $family_description $results_dir_targets/$Final_model_dir_ECOD_X\n";
-system("perl  $GLOBAL_PATH/scripts/combine_prediction_with_template_ECOD_X.pl   $task_dir/$model_dir/$initial_model_name.list_with_fea  $task_dir/$predict_dir_ECOD_X/  $GLOBAL_PATH/scripts/database_ECOD_X/XGroup2length_withName_hasFea.list $task_dir/$KL_hidden_dir_ECOD_X/score_ranking_dir  $fold_description $family_description $results_dir_targets/$Final_model_dir_ECOD_X");
+print LOG "perl  $GLOBAL_PATH/scripts/P1_run_fold_recognition/combine_prediction_with_template_ECOD_X.pl   $task_dir/$model_dir/$initial_model_name.list_with_fea  $task_dir/$predict_dir_ECOD_X/  $GLOBAL_PATH/database/ECOD/ECOD_X/XGroup2length_withName_hasFea.list  $task_dir/$KL_hidden_dir_ECOD_X/score_ranking_dir  $fold_description $family_description $results_dir_targets/$Final_model_dir_ECOD_X\n";
+system("perl  $GLOBAL_PATH/scripts/P1_run_fold_recognition/combine_prediction_with_template_ECOD_X.pl   $task_dir/$model_dir/$initial_model_name.list_with_fea  $task_dir/$predict_dir_ECOD_X/  $GLOBAL_PATH/database/ECOD/ECOD_X/XGroup2length_withName_hasFea.list $task_dir/$KL_hidden_dir_ECOD_X/score_ranking_dir  $fold_description $family_description $results_dir_targets/$Final_model_dir_ECOD_X");
 
 
 
@@ -740,17 +629,12 @@ while(<INFILE>)
 	{
 		$firstprotein=$pdb_name;
 	}
-	#$hiddenfile = "$task_dir/$KL_hidden_dir/score_ranking_dir/${pdb_name}_template_fea.txt";
-	#$hiddenfile_heatmap = "$task_dir/$KL_hidden_dir/score_ranking_dir/${pdb_name}_template_fea.jpeg";
-	#print LOG "xvfb-run --server-args=\"-screen 0 1024x768x24\"  Rscript $GLOBAL_PATH/scripts/Visualize_hidden_heatmap.R $hiddenfile $hiddenfile_heatmap\n";
-	#system("xvfb-run --server-args=\"-screen 0 1024x768x24\"  Rscript $GLOBAL_PATH/scripts/Visualize_hidden_heatmap.R $hiddenfile $hiddenfile_heatmap");
-	
 	
 	$rankfile = "$task_dir/$predict_dir_ECOD_X/${pdb_name}.rank_list";
 	$rankfile_image = "$task_dir/$predict_dir_ECOD_X/${pdb_name}_prediction_prob.png";
 	#sleep(2);
-	print LOG "python $GLOBAL_PATH/scripts/Visualize_prediction.py  $rankfile $rankfile_image\n";
-	system("python $GLOBAL_PATH/scripts/Visualize_prediction.py  $rankfile $rankfile_image");
+	print LOG "python $GLOBAL_PATH/scripts/P1_run_fold_recognition/Visualize_prediction.py  $rankfile $rankfile_image\n";
+	system("python $GLOBAL_PATH/scripts/P1_run_fold_recognition/Visualize_prediction.py  $rankfile $rankfile_image");
 	`cp $rankfile_image $results_dir_targets/$Final_prediction_dir_ECOD_X/`;
 	
 }
@@ -760,24 +644,9 @@ close INFILE;
 ##############################  visualize the top 10 predictions in ECOD_H 
 
 
-#if($exp_test_env eq 'CASP11')
-#{
-#	$casp_filter_db_list='/var/www/cgi-bin/deepsf_3d/CASP13_development/targets/casp11/ECOD/develop45-20140612/ecod_filtered_out_for_casp11.txt';
-#	print LOG "python  $GLOBAL_PATH/scripts/Analyze_top5_folds.py   $task_dir/$model_dir/$initial_model_name.list_with_fea    /var/www/cgi-bin/DeepSF/database_ECOD_H/ecod.latest.fasta_id90_XHgroup_to_label_relation2.txt /home/jh7x3/DLS2F/DLS2F_Project/Paper_data/Results/12_ECOD_dataset/ECOD_H_group/XHGroup2length_withName_hasFea.list    /home/jh7x3/DLS2F/DLS2F_Project/Paper_data/Results/12_ECOD_dataset/ECOD_H_group/deepsf_results/ $task_dir/$predict_dir_ECOD_H/   5  $task_dir/$KL_hidden_dir_ECOD_H $casp_filter_db_list\n";
-#	system("python  $GLOBAL_PATH/scripts/Analyze_top5_folds.py   $task_dir/$model_dir/$initial_model_name.list_with_fea    /var/www/cgi-bin/DeepSF/database_ECOD_H/ecod.latest.fasta_id90_XHgroup_to_label_relation2.txt /home/jh7x3/DLS2F/DLS2F_Project/Paper_data/Results/12_ECOD_dataset/ECOD_H_group/XHGroup2length_withName_hasFea.list    /home/jh7x3/DLS2F/DLS2F_Project/Paper_data/Results/12_ECOD_dataset/ECOD_H_group/deepsf_results/ $task_dir/$predict_dir_ECOD_H/   5  $task_dir/$KL_hidden_dir_ECOD_H $casp_filter_db_list");
-#}elsif($exp_test_env eq 'CASP12')
-#{
-#	$casp_filter_db_list='/var/www/cgi-bin/deepsf_3d/CASP13_development/targets/casp12/ECOD/develop45-20140612/ecod_filtered_out_for_casp12.txt';
-#	print LOG "python  $GLOBAL_PATH/scripts/Analyze_top5_folds.py   $task_dir/$model_dir/$initial_model_name.list_with_fea    /var/www/cgi-bin/DeepSF/database_ECOD_H/ecod.latest.fasta_id90_XHgroup_to_label_relation2.txt /home/jh7x3/DLS2F/DLS2F_Project/Paper_data/Results/12_ECOD_dataset/ECOD_H_group/XHGroup2length_withName_hasFea.list    /home/jh7x3/DLS2F/DLS2F_Project/Paper_data/Results/12_ECOD_dataset/ECOD_H_group/deepsf_results/ $task_dir/$predict_dir_ECOD_H/   5  $task_dir/$KL_hidden_dir_ECOD_H $casp_filter_db_list\n";
-#	system("python  $GLOBAL_PATH/scripts/Analyze_top5_folds.py   $task_dir/$model_dir/$initial_model_name.list_with_fea    /var/www/cgi-bin/DeepSF/database_ECOD_H/ecod.latest.fasta_id90_XHgroup_to_label_relation2.txt /home/jh7x3/DLS2F/DLS2F_Project/Paper_data/Results/12_ECOD_dataset/ECOD_H_group/XHGroup2length_withName_hasFea.list    /home/jh7x3/DLS2F/DLS2F_Project/Paper_data/Results/12_ECOD_dataset/ECOD_H_group/deepsf_results/ $task_dir/$predict_dir_ECOD_H/   5  $task_dir/$KL_hidden_dir_ECOD_H $casp_filter_db_list");
-#}else{
-print LOG "python  $GLOBAL_PATH/scripts/Analyze_top5_folds.py   $task_dir/$model_dir/$initial_model_name.list_with_fea   $GLOBAL_PATH/scripts/database_ECOD_H/ecod.latest.fasta_id90_XHgroup_to_label_relation2.txt $GLOBAL_PATH/scripts/database_ECOD_H/XHGroup2length_withName_hasFea.list    $GLOBAL_PATH/scripts/database_ECOD_H/deepsf_results/ $task_dir/$predict_dir_ECOD_H/   5  $task_dir/$KL_hidden_dir_ECOD_H\n";
-system("python  $GLOBAL_PATH/scripts/Analyze_top5_folds.py   $task_dir/$model_dir/$initial_model_name.list_with_fea    $GLOBAL_PATH/scripts/database_ECOD_H/ecod.latest.fasta_id90_XHgroup_to_label_relation2.txt $GLOBAL_PATH/scripts/database_ECOD_H/XHGroup2length_withName_hasFea.list   $GLOBAL_PATH/scripts/database_ECOD_H/deepsf_results/ $task_dir/$predict_dir_ECOD_H/   5  $task_dir/$KL_hidden_dir_ECOD_H ");
+print LOG "python  $GLOBAL_PATH/scripts/P1_run_fold_recognition/Analyze_top5_folds.py   $task_dir/$model_dir/$initial_model_name.list_with_fea   $GLOBAL_PATH/database/ECOD/ECOD_H/ecod.latest.fasta_id90_XHgroup_to_label_relation2.txt $GLOBAL_PATH/database/ECOD/ECOD_H/XHGroup2length_withName_hasFea.list    $GLOBAL_PATH/database/ECOD/ECOD_H/deepsf_results/ $task_dir/$predict_dir_ECOD_H/   5  $task_dir/$KL_hidden_dir_ECOD_H\n";
+system("python  $GLOBAL_PATH/scripts/P1_run_fold_recognition/Analyze_top5_folds.py   $task_dir/$model_dir/$initial_model_name.list_with_fea    $GLOBAL_PATH/database/ECOD/ECOD_H/ecod.latest.fasta_id90_XHgroup_to_label_relation2.txt $GLOBAL_PATH/database/ECOD/ECOD_H/XHGroup2length_withName_hasFea.list   $GLOBAL_PATH/database/ECOD/ECOD_H/deepsf_results/ $task_dir/$predict_dir_ECOD_H/   5  $task_dir/$KL_hidden_dir_ECOD_H ");
 
-#}
-#
-#
-#
 
 
 
@@ -791,12 +660,12 @@ while(<TMPFILE>)
 	$selected_templist_file = "$listdir/$pdb_name.templist";
 	$selected_query_file = "$listdir/$pdb_name.querylist";
 	
-    print LOG "perl $GLOBAL_PATH/scripts/calculate_hidden_KL_score_list_ECOD_H.pl  $selected_templist_file $selected_query_file $GLOBAL_PATH/scripts/database_ECOD_H/deepsf_results/   $task_dir/$predict_dir_ECOD_H/   $task_dir/$KL_hidden_dir_ECOD_H/score_ranking_dir  $pdb_name\n";
-    $status = system("perl $GLOBAL_PATH/scripts/calculate_hidden_KL_score_list_ECOD_H.pl  $selected_templist_file $selected_query_file $GLOBAL_PATH/scripts/database_ECOD_H/deepsf_results/   $task_dir/$predict_dir_ECOD_H/   $task_dir/$KL_hidden_dir_ECOD_H/score_ranking_dir  $pdb_name");
+    print LOG "perl $GLOBAL_PATH/scripts/P1_run_fold_recognition/calculate_hidden_KL_score_list_ECOD_H.pl  $selected_templist_file $selected_query_file $GLOBAL_PATH/database/ECOD/ECOD_H/deepsf_results/   $task_dir/$predict_dir_ECOD_H/   $task_dir/$KL_hidden_dir_ECOD_H/score_ranking_dir  $pdb_name\n";
+    $status = system("perl $GLOBAL_PATH/scripts/P1_run_fold_recognition/calculate_hidden_KL_score_list_ECOD_H.pl  $selected_templist_file $selected_query_file $GLOBAL_PATH/database/ECOD/ECOD_H/deepsf_results/   $task_dir/$predict_dir_ECOD_H/   $task_dir/$KL_hidden_dir_ECOD_H/score_ranking_dir  $pdb_name");
     if($status)
 	{
-		print LOG  "Failed to run <perl $GLOBAL_PATH/scripts/calculate_hidden_KL_score_list_ECOD_H.pl  $selected_templist_file $selected_query_file  $GLOBAL_PATH/scripts/database_ECOD_H/deepsf_results/   $task_dir/$predict_dir_ECOD_H/   $task_dir/$KL_hidden_dir_ECOD_H/score_ranking_dir  $pdb_name\n";
-		die "Failed to run <perl $GLOBAL_PATH/scripts/calculate_hidden_KL_score_list_ECOD_H.pl  $selected_templist_file $selected_query_file $GLOBAL_PATH/scripts/database_ECOD_H/deepsf_results/   $task_dir/$predict_dir_ECOD_H/   $task_dir/$KL_hidden_dir_ECOD_H/score_ranking_dir  $pdb_name\n";
+		print LOG  "Failed to run <perl $GLOBAL_PATH/scripts/P1_run_fold_recognition/calculate_hidden_KL_score_list_ECOD_H.pl  $selected_templist_file $selected_query_file  $GLOBAL_PATH/database/ECOD/ECOD_H/deepsf_results/   $task_dir/$predict_dir_ECOD_H/   $task_dir/$KL_hidden_dir_ECOD_H/score_ranking_dir  $pdb_name\n";
+		die "Failed to run <perl $GLOBAL_PATH/scripts/P1_run_fold_recognition/calculate_hidden_KL_score_list_ECOD_H.pl  $selected_templist_file $selected_query_file $GLOBAL_PATH/database/ECOD/ECOD_H/deepsf_results/   $task_dir/$predict_dir_ECOD_H/   $task_dir/$KL_hidden_dir_ECOD_H/score_ranking_dir  $pdb_name\n";
 	}
 	
     $KL_file_check = "$task_dir/$KL_hidden_dir_ECOD_H/score_ranking_dir/${pdb_name}_KL_calc.done";
@@ -819,12 +688,12 @@ while(<TMPFILE>)
         $KL_score_file = "$task_dir/$KL_hidden_dir_ECOD_H/score_ranking_dir/${pdb_name}.KL_output";
         
 		## need use updated template pdb database in CASP13
-		print LOG "perl $GLOBAL_PATH/scripts/combine_top10_hidden_for_5folds_ECOD_H_CAMEO.pl  $KL_score_file $pdb_name   $GLOBAL_PATH/scripts/database_ECOD_H/deepsf_results/  $task_dir/$predict_dir_ECOD_H/  $task_dir/$KL_hidden_dir_ECOD_H/score_ranking_dir  $hidden_feature_file $GLOBAL_PATH\n";
-        $status = system("perl $GLOBAL_PATH/scripts/combine_top10_hidden_for_5folds_ECOD_H_CAMEO.pl  $KL_score_file $pdb_name   $GLOBAL_PATH/scripts/database_ECOD_H/deepsf_results/  $task_dir/$predict_dir_ECOD_H/  $task_dir/$KL_hidden_dir_ECOD_H/score_ranking_dir  $hidden_feature_file $GLOBAL_PATH");
+		print LOG "perl $GLOBAL_PATH/scripts/P1_run_fold_recognition/combine_top10_hidden_for_5folds_ECOD_H_CAMEO.pl  $KL_score_file $pdb_name   $GLOBAL_PATH/database/ECOD/ECOD_H/deepsf_results/  $task_dir/$predict_dir_ECOD_H/  $task_dir/$KL_hidden_dir_ECOD_H/score_ranking_dir  $hidden_feature_file $GLOBAL_PATH\n";
+        $status = system("perl $GLOBAL_PATH/scripts/P1_run_fold_recognition/combine_top10_hidden_for_5folds_ECOD_H_CAMEO.pl  $KL_score_file $pdb_name   $GLOBAL_PATH/database/ECOD/ECOD_H/deepsf_results/  $task_dir/$predict_dir_ECOD_H/  $task_dir/$KL_hidden_dir_ECOD_H/score_ranking_dir  $hidden_feature_file $GLOBAL_PATH");
         if($status)
 		{
-			print LOG  "Failed to run <perl $GLOBAL_PATH/scripts/combine_top10_hidden_for_5folds_ECOD_H_CAMEO.pl  $KL_score_file $pdb_name   $GLOBAL_PATH/scripts/database_ECOD_H/deepsf_results/  $task_dir/$predict_dir_ECOD_H/  $task_dir/$KL_hidden_dir_ECOD_H/score_ranking_dir  $hidden_feature_file $GLOBAL_PATH>\n";
-			die "Failed to run <perl $GLOBAL_PATH/scripts/combine_top10_hidden_for_5folds_ECOD_H_CAMEO.pl  $KL_score_file $pdb_name   $GLOBAL_PATH/scripts/database_ECOD_H/deepsf_results/  $task_dir/$predict_dir_ECOD_H/  $task_dir/$KL_hidden_dir_ECOD_H/score_ranking_dir  $hidden_feature_file $GLOBAL_PATH>\n";
+			print LOG  "Failed to run <perl $GLOBAL_PATH/scripts/P1_run_fold_recognition/combine_top10_hidden_for_5folds_ECOD_H_CAMEO.pl  $KL_score_file $pdb_name   $GLOBAL_PATH/database/ECOD/ECOD_H/deepsf_results/  $task_dir/$predict_dir_ECOD_H/  $task_dir/$KL_hidden_dir_ECOD_H/score_ranking_dir  $hidden_feature_file $GLOBAL_PATH>\n";
+			die "Failed to run <perl $GLOBAL_PATH/scripts/P1_run_fold_recognition/combine_top10_hidden_for_5folds_ECOD_H_CAMEO.pl  $KL_score_file $pdb_name   $GLOBAL_PATH/database/ECOD/ECOD_H/deepsf_results/  $task_dir/$predict_dir_ECOD_H/  $task_dir/$KL_hidden_dir_ECOD_H/score_ranking_dir  $hidden_feature_file $GLOBAL_PATH>\n";
 		}
 		
         
@@ -845,16 +714,14 @@ while(<TMPFILE>)
 	}	
 }
 close TMPFILE;
-#print LOG "$curr_time\nMake predictions:\npython /var/www/cgi-bin/DeepSF/DeepSF_predict.py  $task_dir/$model_dir/$initial_model_name.list_with_fea /var/www/cgi-bin/DeepSF/database/model_ResCNN_pssm-train-iterative-padding-withaa-complex-kmax30-win6_10_bias-sigmoid.json  /var/www/cgi-bin/DeepSF/database/model_ResCNN_pssm-train-weight-iterative-padding-withaa-complex-kmax30-win6_10_bias-sigmoid_Te80.h5    $task_dir/$feature_dir  $task_dir/$feature_dir    $task_dir/$predict_dir/ 30 /var/www/cgi-bin/DeepSF/database/fold_label_relation2.txt \n";
-#system("python /var/www/cgi-bin/DeepSF/DeepSF_predict.py  $task_dir/$model_dir/$initial_model_name.list_with_fea /var/www/cgi-bin/DeepSF/database/model_ResCNN_pssm-train-iterative-padding-withaa-complex-kmax30-win6_10_bias-sigmoid.json  /var/www/cgi-bin/DeepSF/database/model_ResCNN_pssm-train-weight-iterative-padding-withaa-complex-kmax30-win6_10_bias-sigmoid_Te80.h5    $task_dir/$feature_dir  $task_dir/$feature_dir    $task_dir/$predict_dir/ 30 /var/www/cgi-bin/DeepSF/database/fold_label_relation2.txt");
 
 
-$fold_description = "$GLOBAL_PATH/scripts/database_ECOD_X/ecod.latest.fasta_id90_webinfo.txt";
-$family_description = "$GLOBAL_PATH/scripts/database_ECOD_X/ecod.latest.fasta_id90_webinfo.txt";
+$fold_description = "$GLOBAL_PATH/database/ECOD/ECOD_X/ecod.latest.fasta_id90_webinfo.txt";
+$family_description = "$GLOBAL_PATH/database/ECOD/ECOD_X/ecod.latest.fasta_id90_webinfo.txt";
 ### combine the prediction with top1 template 
 
-print LOG "perl  $GLOBAL_PATH/scripts/combine_prediction_with_template_ECOD_H.pl   $task_dir/$model_dir/$initial_model_name.list_with_fea  $task_dir/$predict_dir_ECOD_H/    $GLOBAL_PATH/scripts/database_ECOD_H/XHGroup2length_withName_hasFea.list  $task_dir/$KL_hidden_dir_ECOD_H/score_ranking_dir  $fold_description $family_description $results_dir_targets/$Final_model_dir_ECOD_H\n";
-system("perl  $GLOBAL_PATH/scripts/combine_prediction_with_template_ECOD_H.pl   $task_dir/$model_dir/$initial_model_name.list_with_fea  $task_dir/$predict_dir_ECOD_H/    $GLOBAL_PATH/scripts/database_ECOD_H/XHGroup2length_withName_hasFea.list  $task_dir/$KL_hidden_dir_ECOD_H/score_ranking_dir  $fold_description $family_description $results_dir_targets/$Final_model_dir_ECOD_H");
+print LOG "perl  $GLOBAL_PATH/scripts/P1_run_fold_recognition/combine_prediction_with_template_ECOD_H.pl   $task_dir/$model_dir/$initial_model_name.list_with_fea  $task_dir/$predict_dir_ECOD_H/    $GLOBAL_PATH/database/ECOD/ECOD_H/XHGroup2length_withName_hasFea.list  $task_dir/$KL_hidden_dir_ECOD_H/score_ranking_dir  $fold_description $family_description $results_dir_targets/$Final_model_dir_ECOD_H\n";
+system("perl  $GLOBAL_PATH/scripts/P1_run_fold_recognition/combine_prediction_with_template_ECOD_H.pl   $task_dir/$model_dir/$initial_model_name.list_with_fea  $task_dir/$predict_dir_ECOD_H/    $GLOBAL_PATH/database/ECOD/ECOD_H/XHGroup2length_withName_hasFea.list  $task_dir/$KL_hidden_dir_ECOD_H/score_ranking_dir  $fold_description $family_description $results_dir_targets/$Final_model_dir_ECOD_H");
 
 
 
@@ -875,17 +742,12 @@ while(<INFILE>)
 	{
 		$firstprotein=$pdb_name;
 	}
-	#$hiddenfile = "$task_dir/$KL_hidden_dir/score_ranking_dir/${pdb_name}_template_fea.txt";
-	#$hiddenfile_heatmap = "$task_dir/$KL_hidden_dir/score_ranking_dir/${pdb_name}_template_fea.jpeg";
-	#print LOG "xvfb-run --server-args=\"-screen 0 1024x768x24\"  Rscript $GLOBAL_PATH/scripts/Visualize_hidden_heatmap.R $hiddenfile $hiddenfile_heatmap\n";
-	#system("xvfb-run --server-args=\"-screen 0 1024x768x24\"  Rscript $GLOBAL_PATH/scripts/Visualize_hidden_heatmap.R $hiddenfile $hiddenfile_heatmap");
-	
 	
 	$rankfile = "$task_dir/$predict_dir_ECOD_H/${pdb_name}.rank_list";
 	$rankfile_image = "$task_dir/$predict_dir_ECOD_H/${pdb_name}_prediction_prob.png";
 	#sleep(2);
-	print LOG "python $GLOBAL_PATH/scripts/Visualize_prediction.py  $rankfile $rankfile_image\n";
-	system("python $GLOBAL_PATH/scripts/Visualize_prediction.py  $rankfile $rankfile_image");
+	print LOG "python $GLOBAL_PATH/scripts/P1_run_fold_recognition/Visualize_prediction.py  $rankfile $rankfile_image\n";
+	system("python $GLOBAL_PATH/scripts/P1_run_fold_recognition/Visualize_prediction.py  $rankfile $rankfile_image");
 	`cp $rankfile_image $results_dir_targets/$Final_prediction_dir_ECOD_H/`;
 	
 }

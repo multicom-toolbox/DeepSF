@@ -3,7 +3,7 @@ import sys
 import os
 import shutil
 
-GLOBAL_PATH='/home/jh7x3/DLS2F/DLS2F_Project/Paper_data/DeepSF_Source_code/';
+GLOBAL_PATH='/home/casp13/deepsf_3d/Github/DeepSF/';
 sys.path.insert(0, GLOBAL_PATH+'/lib')
 
 
@@ -39,9 +39,9 @@ if not os.path.exists(pssm_dir_global):
   exit(-1)
     
 
-test_datafile=datadir+'/Test.list'
+test_datafile=datadir+'/SCOP206.list'
 train_datafile=datadir+'/Traindata.list'
-val_datafile=datadir+'/validation.list'
+val_datafile=datadir+'/Testdata.list'
 
 CV_dir=outputdir+'/interative_filter'+str(nb_filters)+'_layers'+str(nb_layers)+'_opt'+str(opt)+'_ftsize'+str(filtsize)+'_hn'+str(hidden_num)+'_ktop_node'+str(ktop_node);
 

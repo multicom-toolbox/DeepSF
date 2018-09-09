@@ -57,7 +57,7 @@ if (prompt_yn("DeepSF will be installed into <$install_dir> ")){
 print "Start install DeepSF into <$install_dir>\n"; 
 
 
-$files		="training/P1_evaluate.sh,training/P1_train.sh,training/predict_single.py,training/predict_main.py,training/training_main.py";
+$files		="scripts/P2_alignment_generation/gen_query_temp_align_proc.pl,software/pspro2/configure.pl,scripts/P1_run_fold_recognition/Analyze_top5_folds.py,scripts/P1_run_fold_recognition/run_DeepSF_fr.pl,training/P1_evaluate.sh,training/P1_train.sh,training/predict_single.py,training/predict_main.py,training/training_main.py";
 
 @updatelist		=split(/,/,$files);
 
@@ -90,6 +90,104 @@ foreach my $file (@updatelist) {
 
 }
 
+
+$files		="software/spem-release/spem/bin/scan_spem_alone.job,software/psipred/runpsipred_new";
+
+@updatelist		=split(/,/,$files);
+
+foreach my $file (@updatelist) {
+	$file2update=$install_dir.$file;
+	
+	$check_log ='GLOBAL_PATH=';
+	open(IN,$file2update) || die "Failed to open file $file2update\n";
+	open(OUT,">$file2update.tmp") || die "Failed to open file $file2update.tmp\n";
+	while(<IN>)
+	{
+		$line = $_;
+		chomp $line;
+
+		if(index($line,$check_log)>=0)
+		{
+			print $file2update."\n";
+			print "Current ".$line."\n";
+			print "Change to ".substr($line,0,index($line, '=')+1).$install_dir."\n\n\n";
+			print OUT substr($line,0,index($line, '=')+1).$install_dir."\n";
+		}else{
+			print OUT $line."\n";
+		}
+	}
+	close IN;
+	close OUT;
+	system("mv $file2update.tmp $file2update");
+	system("chmod 755  $file2update");
+
+
+}
+
+
+
+print "#########  Setting up pspro2\n";
+$ssprodir = $install_dir.'/software/pspro2/';
+chdir $ssprodir;
+if(-f 'configure.pl')
+{
+	$status = system("perl configure.pl");
+	if($status){
+		die "Failed to run perl configure.pl \n";
+		exit(-1);
+	}
+}else{
+	die "The configure.pl file for sspro doesn't exist, please contact us(Jie Hou: jh7x3\@mail.missouri.edu)\n";
+}
+
+print "\n#########  Setting up SCRATCH \n";
+$ssprodir = $install_dir.'/software/SCRATCH-1D_1.1/';
+chdir $ssprodir;
+if(-f 'install.pl')
+{
+	$status = system("perl install.pl");
+	if($status){
+		die "Failed to run perl install.pl \n";
+		exit(-1);
+	}
+}else{
+	die "The configure.pl file for $ssprodir doesn't exist, please contact us(Jie Hou: jh7x3\@mail.missouri.edu)\n";
+}
+
+
+print "\n#########  Setting up MODELLER \n";
+my($addr_mod913) = $install_dir."/software/"."modeller9.13/bin/mod9.13";
+if (!-s $addr_mod913) {
+	die "Please check $addr_mod913, you can download the modeller and install it by yourself if the current one in the tool folder is not working well, the key is MODELIRANJE.  please install it to the folder $tool_path/modeller9.13, with the file mod9.13 in the bin directory\n";
+}
+
+my($deep_mod913) = $install_dir."/software/"."modeller9.13/bin/modeller9.13local";
+$OUT = new FileHandle ">$deep_mod913";
+$IN=new FileHandle "$addr_mod913";
+while(defined($line=<$IN>))
+{
+        chomp($line);
+        @ttt = split(/\=/,$line);
+
+        if(@ttt>1 && $ttt[0] eq "MODINSTALL9v13")
+        {
+                print $OUT "MODINSTALL9v13=\"$install_dir/software/modeller9.13\"\n";
+        }
+        else
+        {
+                print $OUT $line."\n";
+        }
+}
+$IN->close();
+$OUT->close();
+system("chmod 755 $deep_mod913");
+my($modeller_conf) = $install_dir."/software/"."modeller9.13/modlib/modeller/config.py";
+$OUT = new FileHandle ">$modeller_conf";
+print $OUT "install_dir = r\'$install_dir/software/modeller9.13/\'\n";
+print $OUT "license = \'MODELIRANJE\'";
+$OUT->close();
+system("chmod 755 $modeller_conf");
+print "Done\n";
 
 sub prompt_yn {
   my ($query) = @_;

@@ -5,6 +5,9 @@ import os
 import time
 import shutil
 import shlex, subprocess
+
+GLOBAL_PATH='/home/casp13/deepsf_3d/Github/DeepSF/';
+
 if __name__ == '__main__':
 
     #print len(sys.argv)
@@ -56,9 +59,9 @@ if __name__ == '__main__':
         proteins = sequence_file[i].rstrip().split('\t')[0]
         #check if protein pdb exists
         tpdb="";
-        tpdb1 = "/home/casp13/deepsf_3d/scripts/database/SCOP_template_PDB/pdb/"+proteins+".atom";
-        tpdb2 = "/home/casp13/deepsf_3d/scripts/database/ECOD_template_PDB//pdb/"+proteins+".atom";
-        tpdb3 = "/home/casp13/deepsf_3d/scripts/database/ECOD_template_PDB/pdb/"+proteins+".atom";
+        tpdb1 = GLOBAL_PATH+"/database/SCOP/SCOP_template_PDB/pdb/"+proteins+".atom";
+        tpdb2 = GLOBAL_PATH+"/database/ECOD/ECOD_template_PDB//pdb/"+proteins+".atom";
+        tpdb3 = GLOBAL_PATH+"/database/ECOD/ECOD_template_PDB/pdb/"+proteins+".atom";
         if os.path.isfile(tpdb1):
             tpdb = tpdb1;
         elif os.path.isfile(tpdb2):
