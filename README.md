@@ -24,12 +24,16 @@ cd ~/DeepSF/
 git clone https://github.com/multicom-toolbox/DeepSF.git
 ```
 
-**(B) Download feature dataset**  
+**(B) Download feature dataset for training only**  
 ```
 cd ~/DeepSF/  
 cd datasets 
-wget http://sysbio.rnet.missouri.edu/bdm_download/DeepSF/datasets/features.tar.gz
-tar -zxf features.tar.gz
+mkdir features
+cd features
+wget http://sysbio.rnet.missouri.edu/bdm_download/DeepSF/datasets/features/Feature_aa_ss_sa.tar.gz
+tar -zxf Feature_aa_ss_sa.tar.gz
+wget http://sysbio.rnet.missouri.edu/bdm_download/DeepSF/datasets/features/PSSM_Fea.tar.gz
+tar -zxf PSSM_Fea.tar.gz
 ```
 
 **(C) Install theano, Keras, and h5py and Update keras.json**  
