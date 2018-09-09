@@ -257,6 +257,7 @@ The ranking of top SCOP folds are saved in test/out1/fold_rank_list.SCOP
 The ranking of top ECOD_X folds are saved in test/out1/fold_rank_list.ECOD_X
 The ranking of top ECOD_H folds are saved in test/out1/fold_rank_list.ECOD_H
 
+The ranking of top selected templates are saved in  test/out1/test.template.rank
 ```
 
 (d) Run fold recognition and structure prediction
@@ -265,7 +266,7 @@ The ranking of top ECOD_H folds are saved in test/out1/fold_rank_list.ECOD_H
 source ~/python_virtualenv_deepsf/bin/activate
 perl scripts/deepsf_fr.pl scripts/fr_option_adv_for_deepsf test/test.fasta  test/out2
 
-
+The ranking of top selected templates are saved in  test/out2/test.template.rank
 The predicted models are saved in test/out2/TOP5/
 
 ```
