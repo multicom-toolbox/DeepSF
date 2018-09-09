@@ -63,19 +63,20 @@ virtualenv ~/python_virtualenv_deepsf
 source ~/python_virtualenv_deepsf/bin/activate
 ```
 
-(b) Install theano: 
-```
-pip install theano==0.9.0
-```
-
-(c) Install Keras:
+(b) Install Keras:
 ```
 pip install keras==1.2.2
 ```
 
+(c) Install theano: 
+```
+pip install theano==0.9.0
+```
+
+
 (d) Install the h5py library:  
 ```
-pip install python-h5py
+pip install h5py
 ```
 
 (e) Install the matplotlib library:  
@@ -104,35 +105,35 @@ perl configure.pl
 
 ***use Sequence similarity reduction dataset as training***
 ```
-THEANO_FLAGS=floatX=float32,device=cpu python ./training/predict_single.py ./datasets/Traindata.list ./models/model_SimilarityReduction.json  ./models/model_SimilarityReduction.h5 /var/www/html/DeepSF/download/SCOP175_training_data_09202017/ ./test/out1 30
+THEANO_FLAGS=floatX=float32,device=cpu python ./training/predict_single.py ./datasets/Traindata.list ./models/model_SimilarityReduction.json  ./models/model_SimilarityReduction.h5 datasets/features/ ./test/out1 30
 The top1_acc accuracy is 0.85734 (12602/14699)
 The top5_acc accuracy is 0.97524 (14335/14699)
 The top10_acc accuracy is 0.98925 (14541/14699)
 The top15_acc accuracy is 0.99374 (14607/14699)
 The top20_acc accuracy is 0.99599 (14640/14699)
 
-THEANO_FLAGS=floatX=float32,device=cpu python ./training/predict_single.py ./datasets/D1_SimilarityReduction_dataset/Testdata_id95againstTrain.list  ./models/model_SimilarityReduction.json  ./models/model_SimilarityReduction.h5 /var/www/html/DeepSF/download/SCOP175_training_data_09202017/ ./test/out2 30
+THEANO_FLAGS=floatX=float32,device=cpu python ./training/predict_single.py ./datasets/D1_SimilarityReduction_dataset/Testdata_id95againstTrain.list  ./models/model_SimilarityReduction.json  ./models/model_SimilarityReduction.h5 datasets/features/ ./test/out2 30
 The top1_acc accuracy is 0.80378 (1618/2013)
 The top5_acc accuracy is 0.93691 (1886/2013)
 The top10_acc accuracy is 0.96225 (1937/2013)
 The top15_acc accuracy is 0.97317 (1959/2013)
 The top20_acc accuracy is 0.97963 (1972/2013)
 
-THEANO_FLAGS=floatX=float32,device=cpu python ./training/predict_single.py ./datasets/D1_SimilarityReduction_dataset/Testdata_id70againstTrain.list  ./models/model_SimilarityReduction.json  ./models/model_SimilarityReduction.h5 /var/www/html/DeepSF/download/SCOP175_training_data_09202017/ ./test/out2 30
+THEANO_FLAGS=floatX=float32,device=cpu python ./training/predict_single.py ./datasets/D1_SimilarityReduction_dataset/Testdata_id70againstTrain.list  ./models/model_SimilarityReduction.json  ./models/model_SimilarityReduction.h5 datasets/features/ ./test/out2 30
 The top1_acc accuracy is 0.78221 (1117/1428)
 The top5_acc accuracy is 0.92437 (1320/1428)
 The top10_acc accuracy is 0.95378 (1362/1428)
 The top15_acc accuracy is 0.96639 (1380/1428)
 The top20_acc accuracy is 0.97409 (1391/1428)
 
-THEANO_FLAGS=floatX=float32,device=cpu python ./training/predict_single.py ./datasets/D1_SimilarityReduction_dataset/Testdata_id40againstTrain.list  ./models/model_SimilarityReduction.json  ./models/model_SimilarityReduction.h5 /var/www/html/DeepSF/download/SCOP175_training_data_09202017/ ./test/out2 30
+THEANO_FLAGS=floatX=float32,device=cpu python ./training/predict_single.py ./datasets/D1_SimilarityReduction_dataset/Testdata_id40againstTrain.list  ./models/model_SimilarityReduction.json  ./models/model_SimilarityReduction.h5 datasets/features/ ./test/out2 30
 The top1_acc accuracy is 0.75812 (677/893)
 The top5_acc accuracy is 0.90034 (804/893)
 The top10_acc accuracy is 0.93617 (836/893)
 The top15_acc accuracy is 0.95185 (850/893)
 The top20_acc accuracy is 0.96193 (859/893)
 
-THEANO_FLAGS=floatX=float32,device=cpu python ./training/predict_single.py ./datasets/D1_SimilarityReduction_dataset/Testdata_id25againstTrain.list  ./models/model_SimilarityReduction.json  ./models/model_SimilarityReduction.h5 /var/www/html/DeepSF/download/SCOP175_training_data_09202017/ ./test/out2 30
+THEANO_FLAGS=floatX=float32,device=cpu python ./training/predict_single.py ./datasets/D1_SimilarityReduction_dataset/Testdata_id25againstTrain.list  ./models/model_SimilarityReduction.json  ./models/model_SimilarityReduction.h5 datasets/features/ ./test/out2 30
 The top1_acc accuracy is 0.66948 (476/711)
 The top5_acc accuracy is 0.87623 (623/711)
 The top10_acc accuracy is 0.92124 (655/711)
@@ -140,7 +141,7 @@ The top15_acc accuracy is 0.94093 (669/711)
 The top20_acc accuracy is 0.95218 (677/711)
 
 
-THEANO_FLAGS=floatX=float32,device=cpu python ./training/predict_single.py ./datasets/SCOP206.list ./models/model_SimilarityReduction.json  ./models/model_SimilarityReduction.h5 /var/www/html/DeepSF/download/SCOP175_training_data_09202017/ ./test/out1 30
+THEANO_FLAGS=floatX=float32,device=cpu python ./training/predict_single.py ./datasets/SCOP206.list ./models/model_SimilarityReduction.json  ./models/model_SimilarityReduction.h5 datasets/features/ ./test/out1 30
 The top1_acc accuracy is 0.72996 (1849/2533)
 The top5_acc accuracy is 0.90249 (2286/2533)
 The top10_acc accuracy is 0.94512 (2394/2533)
@@ -151,21 +152,21 @@ The top20_acc accuracy is 0.96723 (2450/2533)
 
 *** use Three-level homology reduction dataset as training***
 ```
-THEANO_FLAGS=floatX=float32,device=cpu python ./training/predict_single.py ./datasets/D2_Three_levels_dataset/test_dataset.list_fold ./models/model_ThreeLevel.json  ./models/model_ThreeLevel.h5 /var/www/html/DeepSF/download/SCOP175_training_data_09202017/ ./test/out2  36
+THEANO_FLAGS=floatX=float32,device=cpu python ./training/predict_single.py ./datasets/D2_Three_levels_dataset/test_dataset.list_fold ./models/model_ThreeLevel.json  ./models/model_ThreeLevel.h5 datasets/features/ ./test/out2  36
 The top1_acc accuracy is 0.40947 (294/718)
 The top5_acc accuracy is 0.70474 (506/718)
 The top10_acc accuracy is 0.82451 (592/718)
 The top15_acc accuracy is 0.86908 (624/718)
 The top20_acc accuracy is 0.89694 (644/718)
 
-THEANO_FLAGS=floatX=float32,device=cpu python ./training/predict_single.py ./datasets/D2_Three_levels_dataset/test_dataset.list_family ./models/model_ThreeLevel.json  ./models/model_ThreeLevel.h5 /var/www/html/DeepSF/download/SCOP175_training_data_09202017/ ./test/out2  36
+THEANO_FLAGS=floatX=float32,device=cpu python ./training/predict_single.py ./datasets/D2_Three_levels_dataset/test_dataset.list_family ./models/model_ThreeLevel.json  ./models/model_ThreeLevel.h5 datasets/features/ ./test/out2  36
 The top1_acc accuracy is 0.76179 (969/1272)
 The top5_acc accuracy is 0.94497 (1202/1272)
 The top10_acc accuracy is 0.97563 (1241/1272)
 The top15_acc accuracy is 0.98428 (1252/1272)
 The top20_acc accuracy is 0.98978 (1259/1272)
 
-THEANO_FLAGS=floatX=float32,device=cpu python ./training/predict_single.py ./datasets/D2_Three_levels_dataset/test_dataset.list_superfamily ./models/model_ThreeLevel.json  ./models/model_ThreeLevel.h5 /var/www/html/DeepSF/download/SCOP175_training_data_09202017/ ./test/out2  36
+THEANO_FLAGS=floatX=float32,device=cpu python ./training/predict_single.py ./datasets/D2_Three_levels_dataset/test_dataset.list_superfamily ./models/model_ThreeLevel.json  ./models/model_ThreeLevel.h5 datasets/features/ ./test/out2  36
 The top1_acc accuracy is 0.50718 (636/1254)
 The top5_acc accuracy is 0.77671 (974/1254)
 The top10_acc accuracy is 0.86443 (1084/1254)
@@ -187,6 +188,7 @@ The top20_acc accuracy is 0.99599 (14640/14699)
 
 **Evaluation**
 ```
+cd training
 sh P1_evaluate.sh
 
 The top1_acc accuracy is 0.84142 (12368/14699)
@@ -222,6 +224,15 @@ rm database.tar.gz
 (b) Test required softwares
 
 ```
+cd software/pspro2
+mkdir test3
+bin/predict_ss_sa_cm.sh test/test.fasta  test3
+
+cd software/SCRATCH-1D_1.1
+cd doc/
+../bin/run_SCRATCH-1D_predictors.sh test.fasta test.out 4
+
+
 ```
 
 (c) Run fold recognition only
@@ -241,5 +252,6 @@ The ranking of top ECOD_H folds are saved in test/out1/fold_rank_list.ECOD_H
 ```
 source ~/python_virtualenv_deepsf/bin/activate
 perl scripts/deepsf_fr.pl scripts/fr_option_adv_for_deepsf test/test.fasta  test/out2
+
 
 ```
