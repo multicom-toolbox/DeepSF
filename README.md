@@ -11,7 +11,7 @@ Test Environment
 Installation Steps
 --------------------------------------------------------------------------------------
 
-**(A) Download and Unzip DeepSF package**  
+**(A) Download and Unzip DeepSF source package**  
 Create a working directory called 'DeepSF' where all scripts, programs and databases will reside:
 ```
 cd ~
@@ -184,6 +184,9 @@ The top20_acc accuracy is 0.97466 (1962/2013)
 
 **(G) Protein fold recognition and structure prediction**
 
+(a) Download the database
+(b) Run fold recognition only
+(c) Run fold recognition and structure prediction
 ```
 Working on the update
 
