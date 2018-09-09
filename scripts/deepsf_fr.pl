@@ -16,12 +16,12 @@ if (@ARGV < 3)
 	die "need 3 parameters: fr option file, query file(fasta), output dir.\n"; 
 }
 
-$option_file = shift @ARGV;
-$query_file = shift @ARGV;
-$out_dir = shift @ARGV;
+$option_file = abs_path(shift @ARGV);
+$query_file = abs_path(shift @ARGV);
+$out_dir = abs_path(shift @ARGV);
 $fold_recognition_only = shift @ARGV;
 
-if($fold_recognition_only ne 'no')
+if($fold_recognition_only ne 'no' and $fold_recognition_only !='')
 {
 	$fold_recognition_only = 'yes';
 	print "Setting to fold recognition only mode\n\n";
@@ -173,7 +173,7 @@ $fr_max_linker_size >= 0 || die "fr: gap stop size must be  >= 0\n";
 #generate required query files.
 print "generate query related files...\n";
 #query dir must use absolute path
-$cur_dir = `pwd`;
+$cur_dir = $out_dir;
 chomp $cur_dir;
 if (substr($out_dir, 0, 1) eq "/")
 {
@@ -195,6 +195,7 @@ print "query (output) dir = $query_dir\n";
 
 $start_time = time();
 
+my $id = $qname;#C00165
 
 `mkdir -p $out_dir` if not -d $out_dir;
 `cp $query_file $out_dir/$id.fasta`;
@@ -206,7 +207,6 @@ print "L    : ".length(seq_fasta($fasta_file))."\n";
 print "Seq  : ".seq_fasta($fasta_file)."\n\n";
 
 
-my $id = $qname;#C00165
 
 $out_dir = abs_path($out_dir);
 chdir $out_dir or confess $!;

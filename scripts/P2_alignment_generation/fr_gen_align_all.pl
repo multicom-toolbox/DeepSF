@@ -20,6 +20,7 @@ $out_file = shift @ARGV;
 open(OPTION, $option_file) || die "can't read option file.\n";
 $alignment_method = "";
 $lobster_dir = "";
+$atom_dir = "";
 $fr_palign_join_gap_size = 5; 
 $fr_palign_stop_gap_size = 20;
 $fr_palign_min_cover_size = 20; 

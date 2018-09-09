@@ -3,7 +3,7 @@ import sys
 import os
 import shutil
 
-GLOBAL_PATH='/home/casp13/deepsf_3d/Github/DeepSF/';
+GLOBAL_PATH='/home/casp13/deepsf_3d/Github/test/DeepSF/';
 sys.path.insert(0, GLOBAL_PATH+'/lib')
 
 
@@ -25,8 +25,8 @@ outputdir = sys.argv[11]
 
 
 
-feature_dir_global ='/var/www/html/DeepSF/download/SCOP175_training_data_09202017/Feature_aa_ss_sa/'
-pssm_dir_global = '/var/www/html/DeepSF/download/SCOP175_training_data_09202017/PSSM_Fea/'
+feature_dir_global =GLOBAL_PATH+'/datasets/features/Feature_aa_ss_sa/'
+pssm_dir_global = GLOBAL_PATH+'/datasets/features/PSSM_Fea/'
 
 
 if not os.path.exists(feature_dir_global):
@@ -75,7 +75,7 @@ cmd1='python '+ GLOBAL_PATH + '/lib/DLS2F_predict_fea.py  '+ train_datafile + ' 
 print "Running ", cmd1,"\n\n"
 os.system(cmd1)
 
-cmd2='python '+ GLOBAL_PATH + '/lib/DLS2F_evaluate_SCOP.py  '+ train_datafile  + '  '+GLOBAL_PATH +'/datasets/fold_label_relation2.txt  '  + resultdir + '  ' + results_train
+cmd2='python '+ GLOBAL_PATH + '/lib/DLS2F_evaluate_SCOP.py  '+ train_datafile  + '  '+GLOBAL_PATH +'/datasets/D1_SimilarityReduction_dataset/fold_label_relation2.txt  '  + resultdir + '  ' + results_train
 print "Running ", cmd2,"\n\n"
 os.system(cmd2)
 
@@ -90,7 +90,7 @@ cmd1='python '+ GLOBAL_PATH + '/lib/DLS2F_predict_fea.py  '+ test_datafile + '  
 print "Running ", cmd1,"\n\n"
 os.system(cmd1)
 
-cmd2='python '+ GLOBAL_PATH + '/lib/DLS2F_evaluate_SCOP.py  '+ test_datafile  + '  '+GLOBAL_PATH +'/datasets/fold_label_relation2.txt  '  + resultdir + '  ' + results_test
+cmd2='python '+ GLOBAL_PATH + '/lib/DLS2F_evaluate_SCOP.py  '+ test_datafile  + '  '+GLOBAL_PATH +'/datasets/D1_SimilarityReduction_dataset/fold_label_relation2.txt  '  + resultdir + '  ' + results_test
 print "Running ", cmd2,"\n\n"
 os.system(cmd2)
 
@@ -104,7 +104,7 @@ cmd1='python '+ GLOBAL_PATH + '/lib/DLS2F_predict_fea.py  '+ val_datafile + '  '
 print "Running ", cmd1,"\n\n"
 os.system(cmd1)
 
-cmd2='python '+ GLOBAL_PATH + '/lib/DLS2F_evaluate_SCOP.py  '+ val_datafile  + '  '+GLOBAL_PATH +'/datasets/fold_label_relation2.txt '  + resultdir + '  ' + results_val
+cmd2='python '+ GLOBAL_PATH + '/lib/DLS2F_evaluate_SCOP.py  '+ val_datafile  + '  '+GLOBAL_PATH +'/datasets/D1_SimilarityReduction_dataset/fold_label_relation2.txt '  + resultdir + '  ' + results_val
 print "Running ", cmd2,"\n\n"
 os.system(cmd2)
 

@@ -5,7 +5,7 @@ import shutil
 
 import sys
 
-GLOBAL_PATH='/home/casp13/deepsf_3d/Github/DeepSF/';
+GLOBAL_PATH='/home/casp13/deepsf_3d/Github/test/DeepSF/';
 sys.path.insert(0, GLOBAL_PATH+'/lib')
 
 
@@ -63,7 +63,7 @@ cmd1='python ' + GLOBAL_PATH + '/lib/DLS2F_predict_fea.py  '+ test_file + '  ' +
 print "Running ", cmd1,"\n\n"
 os.system(cmd1)
 
-cmd2='python ' + GLOBAL_PATH + '/lib/DLS2F_evaluate_SCOP.py  '+ test_file + '  '+GLOBAL_PATH +'/datasets/fold_label_relation2.txt  '  + resultdir  + '  ' + results_file
+cmd2='python ' + GLOBAL_PATH + '/lib/DLS2F_evaluate_SCOP.py  '+ test_file + '  '+GLOBAL_PATH +'/datasets/D1_SimilarityReduction_dataset/fold_label_relation2.txt  '  + resultdir  + '  ' + results_file
 print "Running ", cmd2,"\n\n"
 os.system(cmd2)
 

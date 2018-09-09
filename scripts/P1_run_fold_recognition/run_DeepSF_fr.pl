@@ -11,7 +11,7 @@ use List::Util qw(max);
 ######################################
 
 
-my $GLOBAL_PATH='/home/casp13/deepsf_3d/Github/DeepSF/';
+my $GLOBAL_PATH='/home/casp13/deepsf_3d/Github/test/DeepSF/';
 
 $OBSOLETE=7200*15; # 2h * 24   -> 2 days
 $numArgs = @ARGV;

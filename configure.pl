@@ -57,7 +57,7 @@ if (prompt_yn("DeepSF will be installed into <$install_dir> ")){
 print "Start install DeepSF into <$install_dir>\n"; 
 
 
-$files		="scripts/P2_alignment_generation/gen_query_temp_align_proc.pl,software/pspro2/configure.pl,scripts/P1_run_fold_recognition/Analyze_top5_folds.py,scripts/P1_run_fold_recognition/run_DeepSF_fr.pl,training/P1_evaluate.sh,training/P1_train.sh,training/predict_single.py,training/predict_main.py,training/training_main.py";
+$files		="lib/library.py,scripts/P2_alignment_generation/gen_query_temp_align_proc.pl,software/pspro2/configure.pl,scripts/P1_run_fold_recognition/Analyze_top5_folds.py,scripts/P1_run_fold_recognition/run_DeepSF_fr.pl,training/P1_evaluate.sh,training/P1_train.sh,training/predict_single.py,training/predict_main.py,training/training_main.py";
 
 @updatelist		=split(/,/,$files);
 
@@ -123,6 +123,28 @@ foreach my $file (@updatelist) {
 
 
 }
+
+print "#########  Setting up option file\n";
+$option_default = $install_dir.'/scripts/fr_option_adv_for_deepsf.default';
+$option_new = $install_dir.'/scripts/fr_option_adv_for_deepsf';
+
+open(IN,$option_default) || die "Failed to open file $option_default\n";
+open(OUT,">$option_new") || die "Failed to open file $option_new\n";
+while(<IN>)
+{
+	$line = $_;
+	chomp $line;
+
+	if(index($line,'SOFTWARE_PATH')>=0)
+	{
+		$line =~ s/SOFTWARE_PATH/$install_dir/g;
+		print OUT $line."\n";
+	}else{
+		print OUT $line."\n";
+	}
+}
+close IN;
+close OUT;
 
 
 

@@ -11,9 +11,10 @@ from keras.models import Model
 from keras.layers import Activation, Dense, Dropout, Flatten, Input, Merge, Convolution1D, Convolution2D
 from keras.layers.normalization import BatchNormalization
 
+GLOBAL_PATH='/home/casp13/deepsf_3d/Github/test/DeepSF/';
 
-feature_dir_global ='/var/www/html/DeepSF/download/SCOP175_training_data_09202017/Feature_aa_ss_sa/'
-pssm_dir_global = '/var/www/html/DeepSF/download/SCOP175_training_data_09202017/PSSM_Fea/'
+feature_dir_global =GLOBAL_PATH+'/datasets/features/Feature_aa_ss_sa/'
+pssm_dir_global = GLOBAL_PATH+'/datasets/features/PSSM_Fea/'
 
 
 if not os.path.exists(feature_dir_global):

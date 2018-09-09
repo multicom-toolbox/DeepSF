@@ -10,7 +10,7 @@
 #Author: Jianlin Cheng
 #Date: 08/21/2005
 ###############################################################################
-my $GLOBAL_PATH='/home/casp13/deepsf_3d/Github/DeepSF/';
+my $GLOBAL_PATH='/home/casp13/deepsf_3d/Github/test/DeepSF/';
 
 if (@ARGV != 5)
 {
@@ -121,7 +121,7 @@ if ($fr_stx_feature_alignment ne "clustalw" && $fr_stx_feature_alignment ne "lob
 -d $prosys_dir || die "can't find prosys dir.\n";
 -d $pspro_dir || die "can't find pspro dir.\n";
 #-d $betapro_dir || die "can't find betapro dir.\n";
--d $cm_seq_dir || die "can't find cm_seq_dir dir.\n";
+#-d $cm_seq_dir || die "can't find cm_seq_dir dir.\n";
 -d $template_dir || die "can't find template_dir.\n"; 
 use Cwd 'abs_path';
 

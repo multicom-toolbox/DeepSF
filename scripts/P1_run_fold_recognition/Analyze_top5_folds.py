@@ -6,7 +6,7 @@ import time
 import shutil
 import shlex, subprocess
 
-GLOBAL_PATH='/home/casp13/deepsf_3d/Github/DeepSF/';
+GLOBAL_PATH='/home/casp13/deepsf_3d/Github/test/DeepSF/';
 
 if __name__ == '__main__':
 
