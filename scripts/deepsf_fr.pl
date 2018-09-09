@@ -285,13 +285,18 @@ if(!(-e $scop_rank) or !(-e $ecos_x_rank) or !(-e $ecod_h_rank))
 	system("perl  $deepsf_dir/P1_run_fold_recognition/run_DeepSF_fr.pl  $query_file_new");
 }
 
+$rank_file = "$outdir_stage1/template_rank_summary/$qname.rank";
+
 `cp $outdir_stage1/$jobname-predict-out/${qname}.rank_list $query_dir/fold_rank_list.SCOP`;
 `cp $outdir_stage1/$jobname-predict-out-ECOD_X/${qname}.rank_list $query_dir/fold_rank_list.ECOD_X`;
 `cp $outdir_stage1/$jobname-predict-out-ECOD_H/${qname}.rank_list $query_dir/fold_rank_list.ECOD_H`;
+`cp $outdir_stage1/template_rank_summary/$qname.rank $query_dir/$qname.template.rank`;
+
 
 print "\nThe ranking of top SCOP folds are saved in $query_dir/fold_rank_list.SCOP\n";
 print "The ranking of top ECOD_X folds are saved in $query_dir/fold_rank_list.ECOD_X\n";
 print "The ranking of top ECOD_H folds are saved in $query_dir/fold_rank_list.ECOD_H\n\n";
+print "The ranking of top selected templates are saved in $query_dir/$qname.template.rank\n\n";
 
 if($fold_recognition_only eq 'yes')
 {
@@ -299,7 +304,6 @@ if($fold_recognition_only eq 'yes')
 	exit;
 }
 
-$rank_file = "$outdir_stage1/template_rank_summary/$qname.rank";
 
 #################################################################################
 #generate profile-profile alignments between query and templates. 
@@ -1166,6 +1170,7 @@ print "\nThe ranking of top SCOP folds are saved in $query_dir/fold_rank_list.SC
 print "The ranking of top ECOD_X folds are saved in $query_dir/fold_rank_list.ECOD_X\n";
 print "The ranking of top ECOD_H folds are saved in $query_dir/fold_rank_list.ECOD_H\n\n";
 
+print "The ranking of top selected templates are saved in $query_dir/$qname.template.rank\n\n";
 print "The predicted models are saved in $deepsf_top5dir\n\n";
 
 
