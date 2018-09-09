@@ -226,7 +226,7 @@ tar -zxf database.tar.gz
 source ~/python_virtualenv_deepsf/bin/activate
 perl scripts/deepsf_fr.pl scripts/fr_option_adv_for_deepsf test/test.fasta  test/out1  fold_only
 
-The ranking of top SCOP folds are saved in test/out1/fold_rank_list.SCOP`
+The ranking of top SCOP folds are saved in test/out1/fold_rank_list.SCOP
 The ranking of top ECOD_X folds are saved in test/out1/fold_rank_list.ECOD_X
 The ranking of top ECOD_H folds are saved in test/out1/fold_rank_list.ECOD_H
 
