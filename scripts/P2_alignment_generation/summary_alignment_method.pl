@@ -1,21 +1,17 @@
 
-$ENV{'HHLIB'} = "/home/jh7x3/tools/hhsuite-2.0.16-linux-x86_64/lib/hh";
-
-# perl /var/www/cgi-bin/DeepSF/scripts/summary_alignment_hhalign.pl  $task_dir/$KL_hidden_dir/score_ranking_dir/${qid}_top5_folds_info/fold_$fd  $feature_hhm_seq_dir/$qid_query.fasta $fd  $qid  SCOP $task_dir/$jobname-alignment/$qid/hhalign
-
 if (@ARGV != 8)
 {
 	die "need four parameters: input sequence file, given sequence folder, folder of TM-score files and center template file, resulting file of multiple structural alignment of templates!\n"."For example:  /storage/homes/xd9d3/MSA_3D_project/tool/promals_structure_MSA/test/T0515/T0515.fasta /storage/homes/xd9d3/MSA_3D_project/tool/promals_structure_MSA/test/T0515_templates/ /storage/homes/xd9d3/MSA_3D_project/tool/promals_structure_MSA/test/T0515_align/ /storage/homes/xd9d3/MSA_3D_project/tool/promals_structure_MSA/test/T0515_template.msa\n";
 }	 
 
-$template_file = shift @ARGV; #"$task_dir/$KL_hidden_dir/score_ranking_dir/${qid}_top5_folds_info/fold_$fd"
+$template_file = shift @ARGV; #
 $fd = shift @ARGV; #
 $qid  = shift @ARGV; #
 $prefix = shift @ARGV; # SCOP, ECOD_X
 $align_file = shift @ARGV; #T0859.pir.lob 
 $outdir = shift @ARGV; #$task_dir/$jobname-alignment/$qid/hhalign
 $method = shift @ARGV; #hhalign
-$GLOBAL_PATH = shift @ARGV; #/home/jh7x3/CASP13_development/DeepSF-3D/version-V3-2018-04-05/
+$GLOBAL_PATH = shift @ARGV; #
 
 
 $aln_summary = "$outdir/${prefix}_fold_${fd}_top10_$method.pir";

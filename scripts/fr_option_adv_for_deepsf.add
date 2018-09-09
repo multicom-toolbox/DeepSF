@@ -173,4 +173,4 @@ alignment_method=muscle
 
 query_dir=/home/casp13/deepsf_3d/Github/test/DeepSF/test/out5
 
-alignment_method=spem
+alignment_method=compass

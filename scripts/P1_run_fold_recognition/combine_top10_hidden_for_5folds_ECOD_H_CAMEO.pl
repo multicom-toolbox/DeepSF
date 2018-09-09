@@ -1,6 +1,5 @@
-#!#!/usr/bin/perl -w
+#!/usr/bin/perl -w
 
-#$GLOBAL_PATH='/home/jh7x3/CASP13_development/DeepSF-3D/version-V3-2018-04-05/';
 
 if (@ARGV != 7) {
   print "Usage: <input> <output>\n";

@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Tue Feb 28 16:56:26 2017
-
-@author: Jie Hou
-"""
 
 import sys
 import numpy as np
@@ -58,12 +53,6 @@ def import_DLS2FSVM(filename, delimiter='\t', delimiter2=' ',comment='>',skiprow
 
 
 class Dynamick_max_pooling1d(Layer):
-    """
-    Reshapes the Permuted CNN output so that it can be feed to the RNNs.
-    Flattens the last two dims. 3D to 2D , (None,40,1) -> (1,40)
-    """
-    
-    #def __init__(self, incoming=None,inputdim=1, numLayers=5, currlayer=1, ktop=40, **kwargs):
     def __init__(self, numLayers, currlayer, ktop, **kwargs):
         self.numLayers = numLayers
         self.currlayer = currlayer
@@ -90,12 +79,7 @@ class Dynamick_max_pooling1d(Layer):
         return dict(list(base_config.items()) + list(config.items()))
 
 class K_max_pooling1d(Layer):
-    """ 
-    Reshapes the Permuted CNN output so that it can be feed to the RNNs.
-    Flattens the last two dims. 3D to 2D , (None,40,1) -> (1,40)
-    """
-    
-   # def __init__(self,  ktop=40, **kwargs):
+    # def __init__(self,  ktop=40, **kwargs):
     def __init__(self,  ktop, **kwargs):
         self.ktop = ktop
         super(K_max_pooling1d, self).__init__(**kwargs)
@@ -115,8 +99,6 @@ class K_max_pooling1d(Layer):
         return dict(list(base_config.items()) + list(config.items()))
 
 if __name__ == '__main__':
-
-    #print len(sys.argv)
     if len(sys.argv) != 9:
             print 'please input the right parameters: list, model, weight, kmax'
             sys.exit(1)
@@ -124,9 +106,9 @@ if __name__ == '__main__':
     
     test_list=sys.argv[1] 
     model_file=sys.argv[2] 
-    model_weight=sys.argv[3]  #Best_weights_seq0_800
-    feature_dir=sys.argv[4]  #'/home/jh7x3/DLS2F/DLS2F_Project/PDB_SCOP95_SEQ/Feature_data_SCOP/Feature_aa_ss_sa/'
-    pssm_dir=sys.argv[5]  #'/home/jh7x3/DLS2F/DLS2F_Project/PDB_SCOP95_SEQ/Feature_data_SCOP/PSSM_Fea/'
+    model_weight=sys.argv[3]  #
+    feature_dir=sys.argv[4]  #
+    pssm_dir=sys.argv[5]  #
     Resultsdir=sys.argv[6] 
     kmaxnode=int(sys.argv[7]) 
     relationfile=sys.argv[8] 
@@ -206,21 +188,11 @@ if __name__ == '__main__':
         else:
             train_featuredata_all = featuredata_all_tmp
         
-        #print "test_featuredata_all: ",train_featuredata_all.shape
-        #train_targets = np.zeros((train_labels.shape[0], 1195 ), dtype=int)
-        #for i in range(0, train_labels.shape[0]):
-        #    train_targets[i][int(train_labels[i])] = 1
-        
         train_featuredata_all=train_featuredata_all.reshape(1,train_featuredata_all.shape[0],train_featuredata_all.shape[1])
         if pdb_name in Testlist_data_keys:
             raise Exception("Duplicate pdb name %s in Test list " % pdb_name)
         else:
             Testlist_data_keys[pdb_name]=train_featuredata_all
-        
-        #if pdb_name in Testlist_targets_keys:
-        #    raise Exception("Duplicate pdb name %s in Test list " % pdb_name)
-        #else:
-        #    Testlist_targets_keys[pdb_name]=train_targets
         
     sequence_file=open(test_list,'r').readlines() 
     for i in xrange(len(sequence_file)):
@@ -230,7 +202,6 @@ if __name__ == '__main__':
         pdb_name = sequence_file[i].rstrip().split('\t')[0]
         
         val_featuredata_all=Testlist_data_keys[pdb_name]
-        #val_targets=Testlist_targets_keys[pdb_name] 
         
         predict_val= DLS2F_ResCNN.predict([val_featuredata_all])
         hidden_feature= get_flatten_layer_output([val_featuredata_all,1])[0] ## output in train mode = 1 https://keras.io/getting-started/faq/

@@ -130,7 +130,6 @@ for ($i = 0; $i < $thread_num; $i++)
 	`mkdir $outfolder/$thread_dir$i`; 	
 
 	open(THREAD, ">$thread_dir$i/lib$i.list") || die "can't create template file for thread $i\n";
-	#print THREAD "Ranked templates for $name, thread$i\n";
 
 	#allocate templates for thread
 	for ($j = $i * $max_num; $j < ($i+1) * $max_num && $j < $total; $j++)
@@ -141,12 +140,6 @@ for ($i = 0; $i < $thread_num; $i++)
 
 }
 #run treads to generate features
-#input: working dir, prosys dir, query seq name, query file, query opt name, library file, output file, thread id
-
-#use Thread; 
-
-
-#input: working dir, prosys dir, query seq name, query file, query opt name, library file, output file, thread id
 sub create_feature
 {
 	my ($work_dir, $libfile) = @_; 
@@ -177,8 +170,6 @@ sub create_feature
 		$cur_dir = `pwd`;
 		chomp $cur_dir;
 		chdir $work_dir;
-		#print("$prosys_dir/script/hhsearch_align_prepare.pl $prosys_dir $new_hhsearch_dir $psipred_dir $qname.fas $qname.shhm\n");
-		#/home/casp13/MULTICOM_package/software/prosys/script/
 		print("$deepsf_dir/P0_prepare_features/hhsearch_align_prepare.pl $prosys_dir $new_hhsearch_dir $psipred_dir $work_dir/$id_tmp.fas $work_dir/$id_tmp.shhm");
 		system("$deepsf_dir/P0_prepare_features/hhsearch_align_prepare.pl $prosys_dir $new_hhsearch_dir $psipred_dir $work_dir/$id_tmp.fas $work_dir/$id_tmp.shhm");
 		chdir $work_dir;
@@ -192,7 +183,6 @@ $post_process = 0;
 
 for ($i = 0; $i  < $thread_num; $i++)
 {
-#	$threads[$i] = new Thread \&create_feature, "$full_path/$thread_dir$i", $prosys_dir, $name, $query_file, $query_opt, "lib$i.fasta", "thread$i.out", $i;
 	if ( !defined( $kidpid = fork() ) )
 	{
 		die "can't create process $i\n";
@@ -244,4 +234,4 @@ if ($i == $thread_num && $post_process == 0)
 
 }
 END:
-#	`rm -r -f $full_path/$thread_dir$i 2>/dev/null`;
+	`rm -r -f $full_path/$thread_dir$i 2>/dev/null`;

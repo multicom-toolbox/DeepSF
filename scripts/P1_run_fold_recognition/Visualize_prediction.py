@@ -1,10 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Fri Mar 31 22:39:09 2017
-
-@author: Jie Hou
-"""
-
 
 import matplotlib
 # Force matplotlib to not use any Xwindows backend.
@@ -25,13 +19,11 @@ if __name__ == '__main__':
     predictionfile=sys.argv[1] 
     outputfile=sys.argv[2]
     # visualize prediction  
-    #relationfile="C:\\Users\\Jie Hou\\Downloads\\DLS2F\\d1ri9a_.rank_list"
     sequence_file=open(predictionfile,'r').readlines() 
     top_probs=[]
     top_types=[]
     for i in xrange(len(sequence_file)):
         if sequence_file[i].find('Fold') >0 :
-            #print "Skip line ",sequence_file[i]
             continue
         if i >5:
             break

@@ -1,7 +1,7 @@
 #!#!/usr/bin/perl -w
 
-#perl /var/www/cgi-bin/DeepSF/scripts/alg2fold_analysis.pl /var/www/cgi-bin/DeepSF/work/DeepSF-C00602-150797165130007/DeepSF-C00602-150797165130007  C00602  /var/www/cgi-bin/DeepSF/work/DeepSF-C00602-150797165130007/2017-10-14_78819787_7_9_3D/TOP5_aln
-
+#
+my $GLOBAL_PATH='/home/casp13/deepsf_3d/Github/test/DeepSF/';
 
 if (@ARGV != 4) {
   print "Usage: <input> <output>\n";
@@ -146,8 +146,8 @@ sub get_align_region_annotation{
 	$end += 1;
 	
 
-	$fold_description = "/var/www/cgi-bin/DeepSF/database/dir.des.scop.1.75_class.txt";
-	$trainlist = "/var/www/cgi-bin/DeepSF/database/Traindata.list";
+	$fold_description = "$GLOBAL_PATH/database/SCOP/dir.des.scop.1.75_class.txt";
+	$trainlist = "$GLOBAL_PATH/database/SCOP/Traindata.list";
 	open(IN1,"$fold_description")|| die("Failed to open file $fold_description \n");
 	%scop_fold_class_description=();
 	while(<IN1>)
@@ -176,7 +176,7 @@ sub get_align_region_annotation{
 
 
 
-	$fold_description = "/var/www/cgi-bin/DeepSF/database_ECOD_X/ecod.latest.fasta_id90_webinfo.txt";
+	$fold_description = "$GLOBAL_PATH/database/ECOD/ECOD_X/ecod.latest.fasta_id90_webinfo.txt";
 
 
 	open(IN1,"$fold_description")|| die("Failed to open file $fold_description \n");

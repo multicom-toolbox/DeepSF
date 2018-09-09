@@ -1,6 +1,5 @@
 #!/usr/bin/perl
 
-#$GLOBAL_PATH='/home/jh7x3/CASP13_development/DeepSF-3D/version-V3-2018-04-05/';
 
 if (@ARGV != 7) {
   print "Usage: <input> <output>\n";
@@ -17,7 +16,6 @@ $GLOBAL_PATH = $ARGV[6];
 
 
 open(IN1,"$test_file")|| die("Failed to open file $test_file \n");
-#opendir(DIR,"$featuredir")|| die("Failed to open file $featuredir \n");
 open(OUT,">$out")|| die("Failed to open file $out \n");
 
 
@@ -129,7 +127,6 @@ foreach $key (sort keys %top5_folds_info)
 		{
 			@tmps = split(/\t/,$l);
 			$template = $tmps[1];
-			#$pdbfile = '/var/www/cgi-bin/DeepSF/database_ECOD_X/ecod_id90_pdbset/'.$template.'.pdb';
 			$pdbfile = $GLOBAL_PATH.'/database/ECOD/ECOD_template_PDB/pdb/'.$template.'.atom';
 			if(!(-e $pdbfile))
 			{

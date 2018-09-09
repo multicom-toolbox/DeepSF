@@ -5,14 +5,6 @@
 #query sequence name is used to generate output file name
 #query sequence name must not contain "." and white space. 
 #	(better just alphanumeric, "_" or "-")
-#option file: include path to prosys, pspro, and other alignment tools.
-#Author: Jianlin Cheng
-#Date: 08/19/2005
-#
-#Modify to regenerate multiple alignment file using more sensitive options
-#on NR database
-#Date: 10/24/2005
-#Author: Jianlin Cheng
 ###############################################################################
 if (@ARGV != 3)
 {

@@ -163,6 +163,4 @@ foreach $item (@temp)
 }
 #remove last space
 $encoding_fea_new = substr($encoding_fea_new,0,length($encoding_fea_new)-1);
-#$l= length($seq);
-#print "The sequence is: \n $seq \n The encoding feature for SA is:\n".$encoding_fea_new."\n";
 print "SA encoding finished \n"

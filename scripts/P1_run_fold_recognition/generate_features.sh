@@ -1,5 +1,5 @@
 #!/bin/sh
-# Scripts/make_DeepProTa_prediction.sh  2mnjB  /exports/store1/jh7x3/DNTorsion/Inputs/2mnjB  DNN  /exports/store1/jh7x3/DNTorsion/output
+#
 
 
 if [ "$#" -ne 7 ]; then

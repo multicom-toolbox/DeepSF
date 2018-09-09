@@ -1,18 +1,17 @@
 #!/usr/bin/perl -w
-#perl  /var/www/cgi-bin/DeepSF/scripts/combine_prediction_with_template.pl    /var/www/cgi-bin/DeepSF/work/DeepSF-Jie3-149090540221348/Jie3-seqs/DeepSF-Jie3-149090540221348.list_with_fea  /var/www/cgi-bin/DeepSF/work/DeepSF-Jie3-149090540221348/Jie3-predict-out/  /var/www/cgi-bin/DeepSF/database/Traindata.list /var/www/cgi-bin/DeepSF/work/DeepSF-Jie3-149090540221348/Jie3-KL-hidden-out/score_ranking_dir/ /var/www/cgi-bin/DeepSF/database/dir.des.scop.1.75_class.txt /var/www/cgi-bin/DeepSF/work/DeepSF-Jie3-149090540221348/Jie3-top5-model/
-
+#
 if (@ARGV != 7) {
   print "Usage: <input> <output>\n";
   exit;
 }
 
 
-$test_file = $ARGV[0];#Jie3-seqs/DeepSF-Jie3-149090540221348.list_with_fea
-$prediction_dir = $ARGV[1]; # Jie3-predict-out 
+$test_file = $ARGV[0];#
+$prediction_dir = $ARGV[1]; #
 $Traindatalist = $ARGV[2];  
-$temp_dir = $ARGV[3]; #Jie3-KL-hidden-out/score_ranking_dir/d1ri9a__top5_folds_info/
-$fold_description = $ARGV[4];  #/var/www/cgi-bin/DeepSF/database_ECOD_X/ecod.latest.fasta_id90_webinfo.txt
-$family_description = $ARGV[5];  #/var/www/cgi-bin/DeepSF/database_ECOD_X/ecod.latest.fasta_id90_webinfo.txt
+$temp_dir = $ARGV[3]; #
+$fold_description = $ARGV[4];  #
+$family_description = $ARGV[5];  #
 $outdir = $ARGV[6]; 
 
 

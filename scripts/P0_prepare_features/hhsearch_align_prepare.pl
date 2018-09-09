@@ -4,8 +4,6 @@
 #Input: prosys_dir, hhsearch_dir(new version), psipred_dir, msa file, 
 #output shhm file
 #Output: output shhm file
-#Start date: 12/08/2007
-#Author: Jianlin Cheng
 #############################################################################
 
 if (@ARGV != 5)
@@ -39,15 +37,7 @@ print OUT ">$name\n";
 print OUT $seq;
 close OUT;
 
-#$idx = rindex($fasta_file, ".");
-#if ($idx > 0)
-#{
-#	$prefix = substr($fasta_file, 0, $idx);
-#}
-#else
-#{
-#	$prefix = $fasta_file;
-#}
+
 print "predict secondary structure using PSI-PRED...\n";
 
 #this version occasionally fail (may be due to old version of blast)

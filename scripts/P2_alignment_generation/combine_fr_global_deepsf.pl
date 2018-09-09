@@ -3,12 +3,6 @@
 #Combine significant template alignments with significant SVM
 #FR scores. 
 #Input: script_dir, work_dir, rank_file, svm_score_threshold,
-#alignment_file_prefix, output_file
-#Assumption: template pir files exist in work_dir
-#If there are more than one significant tempaltes, a combined
-#pir alignment is generated.
-#Author: Jianlin Cheng
-#Date: 1/10/2006
 ################################################################
 
 if (@ARGV != 6)

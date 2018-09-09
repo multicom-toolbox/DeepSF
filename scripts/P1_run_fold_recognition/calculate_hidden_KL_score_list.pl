@@ -170,9 +170,6 @@ for $name (keys %run_proteinlist)
 }
 `touch $outdir/${pdbname}_KL_calc.done`;
 
-## for Discrete Probability Distribution
-## considering that sum of probability values in both arrays equals to
-
 sub KL_calc{
 	my ($train_feature,$test_feature) = (@_);
 	my $dist = 0;

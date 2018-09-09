@@ -2,17 +2,6 @@
 
 if (@ARGV != 2)
 { # @ARGV used in scalar context = number of args
-
- 
-  print("This program will extract all GO terms from Uniprot database for ReviGO visualization, the output format is GO:000** 1e-14(pvalue)\n");
-  print("***********************************************************\n\n");
-  print("Jie Hou, 10/12/2016\n\n");
-  print("***********************************************************\n");
-  print("You should execute the perl program like this: perl $PROGRAM_NAME addr_swiss_prot_dat  outputfile!\n");
-  print("\n\n***********************************************************\n");
-  print("Examples:\n");
-  print("perl scripts/0_get_GO_list_from_uniprot_by_Category.pl  /rose/space1/CAFA2016/swissprot_psiblast/swiss_prot_2016/uniprot_sprot.dat  /rose/space1/CAFA2016/Jie_files/Analysis_results/0_all_Uniprot_GO_BP_list /rose/space1/CAFA2016/Jie_files/Analysis_results/0_all_Uniprot_GO_CC_list  /rose/space1/CAFA2016/Jie_files/Analysis_results/0_all_Uniprot_GO_MF_list\n\n");
-
   exit(1) ;
 }
 my $starttime = localtime();

@@ -8,8 +8,8 @@ if (@ARGV !=5) {
 $fasta_file = $ARGV[0];
 $output_dir = $ARGV[1]; # use abs address
 $outputfile = $ARGV[2]; # 
-$GLOBAL_PATH = $ARGV[3]; #/home/jh7x3/CASP13_development/DeepSF-3D/version-V3-2018-04-05/
-$SCRATCH_tools = $ARGV[4]; #/home/casp11/casp12/tools/SCRATCH-1D_1.1/
+$GLOBAL_PATH = $ARGV[3]; #
+$SCRATCH_tools = $ARGV[4]; #
 $core_num = 4;
 print "##################  Start generating features for $fasta_file #############\n";
 if (! -f $fasta_file)

@@ -5,8 +5,8 @@ if (@ARGV != 2) {
   exit;
 }
 
-$inputfile = "$ARGV[0]";#/home/jh7x3/DLS2F/DLS2F_Project/PDB_SCOP95_SEQ/Feature_data_SCOP/Feature_data_SCOP_generation/PDB_SCOP95_ss_sa_aa_not_generated_withLabel.fea 
-$outdir =  "$ARGV[1]"; # Feature_aa_ss_sa
+$inputfile = "$ARGV[0]";#
+$outdir =  "$ARGV[1]"; #
 
 
 
