@@ -16,17 +16,25 @@ Installation Steps
 Create a working directory called 'DeepSF' where all scripts, programs and databases will reside:
 ```
 cd ~
-mkdir DeepSF
+mkdir DeepSF_package
 ```
 Download the DeepSF code:
 ```
-cd ~/DeepSF/
+cd ~/DeepSF_package/
 git clone https://github.com/multicom-toolbox/DeepSF.git
+cd DeepSF
+
+# Alternately
+cd ~/DeepSF_package/
+wget http://sysbio.rnet.missouri.edu/bdm_download/DeepSF/DeepSF_source_code.tar.gz
+tar -zxf DeepSF_source_code.tar.gz
+mv DeepSF_source_code DeepSF
+cd DeepSF
 ```
 
 **(B) Download feature dataset for training only**  
 ```
-cd ~/DeepSF/  
+cd ~/DeepSF_package/DeepSF 
 cd datasets 
 mkdir features
 cd features
@@ -38,7 +46,7 @@ tar -zxf PSSM_Fea.tar.gz
 
 **(C) Download software package for structure prediction (~14G)**  
 ```
-cd ~/DeepSF/  
+cd ~/DeepSF_package/DeepSF  
 wget http://sysbio.rnet.missouri.edu/bdm_download/DeepSF/software.tar.gz
 tar -zxf software.tar.gz
 ```
@@ -47,23 +55,23 @@ tar -zxf software.tar.gz
 
 (a) Create python virtual environment
 ```
-virtualenv ~/python_virtualenv
-source ~/python_virtualenv/bin/activate
+virtualenv ~/python_virtualenv_deepsf
+source ~/python_virtualenv_deepsf/bin/activate
 ```
 
 (b) Install theano: 
 ```
-sudo pip install theano==0.9.0
+pip install theano==0.9.0
 ```
 
 (c) Install Keras:
 ```
-sudo pip install keras==1.2.2
+pip install keras==1.2.2
 ```
 
 (d) Install the h5py library:  
 ```
-sudo pip install python-h5py
+pip install python-h5py
 ```
 
 (e) Install the matplotlib library:  
@@ -201,14 +209,14 @@ The top20_acc accuracy is 0.97466 (1962/2013)
 
 (a) Download the template database (~34G)
 ```
-cd ~/DeepSF/  
+cd ~/DeepSF_package/DeepSF 
 wget http://sysbio.rnet.missouri.edu/bdm_download/DeepSF/database.tar.gz
 tar -zxf database.tar.gz
 ```
 (b) Run fold recognition only
 
 ```
-source ~/python_virtualenv/bin/activate
+source ~/python_virtualenv_deepsf/bin/activate
 perl scripts/deepsf_fr.pl scripts/fr_option_adv_for_deepsf test/test.fasta  test/out1  fold_only
 
 The ranking of top SCOP folds are saved in test/out1/fold_rank_list.SCOP`
@@ -220,7 +228,7 @@ The ranking of top ECOD_H folds are saved in test/out1/fold_rank_list.ECOD_H
 (c) Run fold recognition and structure prediction
 
 ```
-source ~/python_virtualenv/bin/activate
+source ~/python_virtualenv_deepsf/bin/activate
 perl scripts/deepsf_fr.pl scripts/fr_option_adv_for_deepsf test/test.fasta  test/out2
 
 ```
