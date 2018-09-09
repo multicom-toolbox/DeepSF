@@ -179,4 +179,10 @@ The top20_acc accuracy is 0.97069 (1954/2013)
 
 
 **(G) Protein fold recognition and structure prediction**
+
+```
 Working on the update
+
+perl /home/casp13/deepsf_3d/Github/DeepSF/scripts/deepsf_fr.pl /home/casp13/deepsf_3d/Github/DeepSF/scripts/fr_option_adv_for_deepsf /home/casp13/deepsf_3d/Github/DeepSF/test/test.fasta  /home/casp13/deepsf_3d/Github/DeepSF/test/out
+
+```
