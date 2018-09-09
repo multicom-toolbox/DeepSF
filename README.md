@@ -55,7 +55,7 @@ tar -zxf software.tar.gz
 rm software.tar.gz
 ```
 
-Test required softwares
+Test required softwares 
 
 ```
 cd software/pspro2
@@ -67,6 +67,8 @@ cd doc/
 ../bin/run_SCRATCH-1D_predictors.sh test.fasta test.out 4
 
 ```
+(if failed, please contact us)
+
 
 **(D) Install theano, Keras, and h5py and Update keras.json**  
 
