@@ -39,6 +39,7 @@ cd datasets
 mkdir features
 cd features
 wget http://sysbio.rnet.missouri.edu/bdm_download/DeepSF/datasets/features/Feature_aa_ss_sa.tar.gz
+
 tar -zxf Feature_aa_ss_sa.tar.gz
 wget http://sysbio.rnet.missouri.edu/bdm_download/DeepSF/datasets/features/PSSM_Fea.tar.gz
 tar -zxf PSSM_Fea.tar.gz
