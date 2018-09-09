@@ -207,11 +207,13 @@ tar -zxf database.tar.gz
 ```
 (b) Run fold recognition only
 
+```
+perl /home/casp13/deepsf_3d/Github/DeepSF/scripts/deepsf_fr.pl /home/casp13/deepsf_3d/Github/DeepSF/scripts/fr_option_adv_for_deepsf /home/casp13/deepsf_3d/Github/DeepSF/test/test.fasta  /home/casp13/deepsf_3d/Github/DeepSF/test/out1  fold_only
+```
+
 (c) Run fold recognition and structure prediction
 
 ```
-Working on the update
-
 perl /home/casp13/deepsf_3d/Github/DeepSF/scripts/deepsf_fr.pl /home/casp13/deepsf_3d/Github/DeepSF/scripts/fr_option_adv_for_deepsf /home/casp13/deepsf_3d/Github/DeepSF/test/test.fasta  /home/casp13/deepsf_3d/Github/DeepSF/test/out
 
 ```
