@@ -266,4 +266,6 @@ source ~/python_virtualenv_deepsf/bin/activate
 perl scripts/deepsf_fr.pl scripts/fr_option_adv_for_deepsf test/test.fasta  test/out2
 
 
+The predicted models are saved in test/out2/TOP5/
+
 ```
