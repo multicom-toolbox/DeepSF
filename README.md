@@ -147,34 +147,34 @@ The top20_acc accuracy is 0.92105 (1155/1254)
 cd training
 sh P1_train.sh
 
-The top1_acc accuracy is 0.75672 (11123/14699)
-The top5_acc accuracy is 0.94013 (13819/14699)
-The top10_acc accuracy is 0.97265 (14297/14699)
-The top15_acc accuracy is 0.98415 (14466/14699)
-The top20_acc accuracy is 0.99000 (14552/14699)
+The top1_acc accuracy is 0.84142 (12368/14699)
+The top5_acc accuracy is 0.97007 (14259/14699)
+The top10_acc accuracy is 0.98782 (14520/14699)
+The top15_acc accuracy is 0.99299 (14596/14699)
+The top20_acc accuracy is 0.99599 (14640/14699)
 ```
 
 **Evaluation**
 ```
 sh P1_evaluate.sh
 
-The top1_acc accuracy is 0.75672 (11123/14699)
-The top5_acc accuracy is 0.94013 (13819/14699)
-The top10_acc accuracy is 0.97265 (14297/14699)
-The top15_acc accuracy is 0.98415 (14466/14699)
-The top20_acc accuracy is 0.99000 (14552/14699)
+The top1_acc accuracy is 0.84142 (12368/14699)
+The top5_acc accuracy is 0.97007 (14259/14699)
+The top10_acc accuracy is 0.98782 (14520/14699)
+The top15_acc accuracy is 0.99299 (14596/14699)
+The top20_acc accuracy is 0.99599 (14640/14699)
 
-The top1_acc accuracy is 0.63956 (1620/2533)
-The top5_acc accuracy is 0.86932 (2202/2533)
-The top10_acc accuracy is 0.92538 (2344/2533)
-The top15_acc accuracy is 0.94473 (2393/2533)
-The top20_acc accuracy is 0.95539 (2420/2533)
+The top1_acc accuracy is 0.70549 (1787/2533)
+The top5_acc accuracy is 0.89380 (2264/2533)
+The top10_acc accuracy is 0.94039 (2382/2533)
+The top15_acc accuracy is 0.95420 (2417/2533)
+The top20_acc accuracy is 0.96210 (2437/2533)
 
-The top1_acc accuracy is 0.73572 (1481/2013)
-The top5_acc accuracy is 0.89916 (1810/2013)
-The top10_acc accuracy is 0.94635 (1905/2013)
-The top15_acc accuracy is 0.96274 (1938/2013)
-The top20_acc accuracy is 0.97069 (1954/2013)
+The top1_acc accuracy is 0.78341 (1577/2013)
+The top5_acc accuracy is 0.92697 (1866/2013)
+The top10_acc accuracy is 0.95926 (1931/2013)
+The top15_acc accuracy is 0.96870 (1950/2013)
+The top20_acc accuracy is 0.97466 (1962/2013)
 ```
 
 
