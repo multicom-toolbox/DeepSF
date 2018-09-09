@@ -36,7 +36,14 @@ wget http://sysbio.rnet.missouri.edu/bdm_download/DeepSF/datasets/features/PSSM_
 tar -zxf PSSM_Fea.tar.gz
 ```
 
-**(C) Install theano, Keras, and h5py and Update keras.json**  
+**(C) Download software package for structure prediction**  
+```
+cd ~/DeepSF/  
+wget http://sysbio.rnet.missouri.edu/bdm_download/DeepSF/software.tar.gz
+tar -zxf software.tar.gz
+```
+
+**(D) Install theano, Keras, and h5py and Update keras.json**  
 
 (a) Create python virtual environment
 ```
@@ -75,13 +82,13 @@ sudo pip install matplotlib
 }
 ```
 
-**(D) Configuration**
+**(E) Configuration**
 
 ```
 perl configure.pl
 ```
 
-**(E) Testing** 
+**(F) Testing** 
 
 ***use Sequence similarity reduction dataset as training***
 ```
@@ -192,8 +199,12 @@ The top20_acc accuracy is 0.97466 (1962/2013)
 
 **(G) Protein fold recognition and structure prediction**
 
-(a) Download the database
-
+(a) Download the template database (~34G)
+```
+cd ~/DeepSF/  
+wget http://sysbio.rnet.missouri.edu/bdm_download/DeepSF/database.tar.gz
+tar -zxf database.tar.gz
+```
 (b) Run fold recognition only
 
 (c) Run fold recognition and structure prediction
