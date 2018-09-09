@@ -12,6 +12,7 @@ Installation Steps
 --------------------------------------------------------------------------------------
 
 **(A) Download and Unzip DeepSF source package**  
+
 Create a working directory called 'DeepSF' where all scripts, programs and databases will reside:
 ```
 cd ~
