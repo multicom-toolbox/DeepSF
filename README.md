@@ -208,14 +208,14 @@ tar -zxf database.tar.gz
 (b) Run fold recognition only
 
 ```
-source /home/casp13/python_virtualenv/bin/activate
-perl /home/casp13/deepsf_3d/Github/DeepSF/scripts/deepsf_fr.pl /home/casp13/deepsf_3d/Github/DeepSF/scripts/fr_option_adv_for_deepsf /home/casp13/deepsf_3d/Github/DeepSF/test/test.fasta  /home/casp13/deepsf_3d/Github/DeepSF/test/out1  fold_only
+source ~/python_virtualenv/bin/activate
+perl scripts/deepsf_fr.pl scripts/fr_option_adv_for_deepsf test/test.fasta  test/out1  fold_only
 ```
 
 (c) Run fold recognition and structure prediction
 
 ```
-source /home/casp13/python_virtualenv/bin/activate
-perl /home/casp13/deepsf_3d/Github/DeepSF/scripts/deepsf_fr.pl /home/casp13/deepsf_3d/Github/DeepSF/scripts/fr_option_adv_for_deepsf /home/casp13/deepsf_3d/Github/DeepSF/test/test.fasta  /home/casp13/deepsf_3d/Github/DeepSF/test/out
+source ~/python_virtualenv/bin/activate
+perl scripts/deepsf_fr.pl scripts/fr_option_adv_for_deepsf test/test.fasta  test/out2
 
 ```
