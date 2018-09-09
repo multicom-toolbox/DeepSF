@@ -36,7 +36,7 @@ wget http://sysbio.rnet.missouri.edu/bdm_download/DeepSF/datasets/features/PSSM_
 tar -zxf PSSM_Fea.tar.gz
 ```
 
-**(C) Download software package for structure prediction**  
+**(C) Download software package for structure prediction (~14G)**  
 ```
 cd ~/DeepSF/  
 wget http://sysbio.rnet.missouri.edu/bdm_download/DeepSF/software.tar.gz
