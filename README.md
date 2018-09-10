@@ -83,9 +83,10 @@ source ~/python_virtualenv_deepsf/bin/activate
 pip install keras==1.2.2
 ```
 
-(c) Install theano: 
+(c) Install theano and numpy: 
 ```
 pip install theano==0.9.0
+pip install numpy==1.12.1
 ```
 
 
