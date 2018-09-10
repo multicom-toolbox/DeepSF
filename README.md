@@ -76,6 +76,7 @@ cd doc/
 ```
 virtualenv ~/python_virtualenv_deepsf
 source ~/python_virtualenv_deepsf/bin/activate
+pip install --upgrade
 ```
 
 (b) Install Keras:
