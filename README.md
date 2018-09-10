@@ -85,8 +85,8 @@ pip install keras==1.2.2
 
 (c) Install theano and numpy: 
 ```
-pip install theano==0.9.0
 pip install numpy==1.12.1
+pip install theano==0.9.0
 ```
 
 
