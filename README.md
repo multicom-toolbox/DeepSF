@@ -169,13 +169,6 @@ The top20_acc accuracy is 0.96723 (2450/2533)
 
 *** use Three-level homology reduction dataset as training***
 ```
-THEANO_FLAGS=floatX=float32,device=cpu python ./training/predict_single.py ./datasets/D2_Three_levels_dataset/test_dataset.list_fold ./models/model_ThreeLevel.json  ./models/model_ThreeLevel.h5 datasets/features/ ./test/out2  36
-The top1_acc accuracy is 0.40947 (294/718)
-The top5_acc accuracy is 0.70474 (506/718)
-The top10_acc accuracy is 0.82451 (592/718)
-The top15_acc accuracy is 0.86908 (624/718)
-The top20_acc accuracy is 0.89694 (644/718)
-
 THEANO_FLAGS=floatX=float32,device=cpu python ./training/predict_single.py ./datasets/D2_Three_levels_dataset/test_dataset.list_family ./models/model_ThreeLevel.json  ./models/model_ThreeLevel.h5 datasets/features/ ./test/out2  36
 The top1_acc accuracy is 0.76179 (969/1272)
 The top5_acc accuracy is 0.94497 (1202/1272)
@@ -189,6 +182,13 @@ The top5_acc accuracy is 0.77671 (974/1254)
 The top10_acc accuracy is 0.86443 (1084/1254)
 The top15_acc accuracy is 0.90431 (1134/1254)
 The top20_acc accuracy is 0.92105 (1155/1254)
+
+THEANO_FLAGS=floatX=float32,device=cpu python ./training/predict_single.py ./datasets/D2_Three_levels_dataset/test_dataset.list_fold ./models/model_ThreeLevel.json  ./models/model_ThreeLevel.h5 datasets/features/ ./test/out2  36
+The top1_acc accuracy is 0.40947 (294/718)
+The top5_acc accuracy is 0.70474 (506/718)
+The top10_acc accuracy is 0.82451 (592/718)
+The top15_acc accuracy is 0.86908 (624/718)
+The top20_acc accuracy is 0.89694 (644/718)
 ```
 
 **Training**
